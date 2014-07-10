@@ -1,6 +1,14 @@
 Rainmaker
 =========
 
+Installation
+------------
+To install the Rainmaker package, use the following command:
+
+  install.packages(c("Rainmaker"), 
+	repos=c("http://usgs-r.github.com","http://cran.us.r-project.org"),
+	dependencies=TRUE,
+	type="both")
 
 Disclaimer
 ----------
