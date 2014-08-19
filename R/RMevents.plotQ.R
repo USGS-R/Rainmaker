@@ -89,8 +89,8 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     if(Qmax < 0) Qmax <- Qmax*0.95
     if(Qmax > 0) Qmax <- Qmax*1.05 
     Qmin <- min(c(subdfQ[,Q]))
-    if(Qmin <= 0) Qmin <- Qmin*1.05; logy <- ""
-    if(Qmin > 0) Qmin <- Qmin*0.95; logy <- logy
+    if(Qmin <= 0) {Qmin <- Qmin*1.05; logy <- ""}
+    if(Qmin > 0) {Qmin <- Qmin*0.95; logy <- logy}
     
     subQ <- subdfQ[,Q]
     subdateQ <- as.POSIXct(subdfQ[,date])
