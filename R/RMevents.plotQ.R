@@ -14,7 +14,7 @@
 #' @param erain string Event rainfall depth column in df.events
 #' @param plot.buffer numeric Used to define plotting window in days. Graphs will include
 #     data Time period preceding beginning of event for including in the graphs
-#' @param logy string "y" if log y-axis for Q or "" if linear axis. Will default to "n"
+#' @param logy string "y" if log y-axis for Q or "" if linear axis. Will default to "".
 #                                if not specific or if minimum Q <= 0.
 #' @param site.name string
 #' @export 
@@ -133,8 +133,4 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     
     
   }
-  par(mar=c(5,2,0,1))
-#   dev.off()
-  
-  return(logy)
 }
