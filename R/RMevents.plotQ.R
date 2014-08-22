@@ -124,6 +124,11 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     abline(v=p.sdate,lty=3,col=colors()[100])
     abline(v=p.edate,lty=3,col=colors()[100])
     
+    arrows(df.events[i,sdate],(rmax-0.15),
+           df.events[i,edate],(rmax-0.15),
+           length=0.07,angle=20,col=colors()[84],
+           code=3) 
+    
     #  abline(v=df.events[i,sdate])
     #  abline(v=df.events[i,edate])
     
