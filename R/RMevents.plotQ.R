@@ -86,8 +86,8 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     ########################## Graph Q  ################################################
     subdfQ <- subset(dfQ, dfQ[,Qdate]>=p.sdate & dfQ[,Qdate]<=p.edate)
     Qmax <- max(subdfQ[,Q] *1.05)
-    if(Qmax < 0) Qmax <- Qmax*0.95
-    if(Qmax > 0) Qmax <- Qmax*1.05 
+    if(Qmax < 0) {Qmax <- Qmax*0.95}
+    if(Qmax > 0) {Qmax <- Qmax*1.05} 
     Qmin <- min(c(subdfQ[,Q]))
     if(Qmin <= 0) {Qmin <- Qmin*1.05; logy <- ""}
     if(Qmin > 0) {Qmin <- Qmin*0.95; logy <- logy}
@@ -123,6 +123,11 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     #  timeline <- 
     abline(v=p.sdate,lty=3,col=colors()[100])
     abline(v=p.edate,lty=3,col=colors()[100])
+    
+    arrows(df.events[i,sdate],(rmax-0.15),
+           df.events[i,edate],(rmax-0.15),
+           length=0.07,angle=20,col=colors()[84],
+           code=3) 
     
     #  abline(v=df.events[i,sdate])
     #  abline(v=df.events[i,edate])
