@@ -16,10 +16,15 @@
 #     data Time period preceding beginning of event for including in the graphs
 #' @param logy string "y" if log y-axis for Q or "" if linear axis. Will default to "".
 #                                if not specific or if minimum Q <= 0.
-#' @param site.name string
+#' @param site.name site name as data type character
+#' @param SampleInfo if TRUE then sample start and end dates/times are plotted on the hydrograph;
+#' if FALSE then sample start and end dates/times are not plotted on the hydrograph.
+#' @param sampbdate character column name in df.events for the beginning of the sampling period
+#' @param sampedate character column name in df.events for the ending of the sampling period
 #' @export 
-#' @return logy
+#' @return plots of rainfall events and discharge
 #' @examples
+#' #Example 1 - Rainfall/Q plots without sample start/end arrows
 #' RDB <- CedarRRain
 #' dfQ <- cedarq
 #' dfQ <- RMprep(dfQ,prep.type=1,date.type=3,tz="CST6CDT")
@@ -28,18 +33,38 @@
 #' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
 #' site.name <- "Example Site"
+#' SampleInfo <- FALSE
 #' pdf(paste(site.name,"_events.pdf",sep=""))
-#' RMevents.plotQ(RDB3,dfQ,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,erain="rain",site.name=site.name)
+#' RMevents.plotQ(RDB3,dfQ,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,erain="rain",
+#' site.name=site.name,SampleInfo=SampleInfo)
+#' shell.exec(paste(site.name,"_events.pdf",sep=""))
+#' dev.off()
+#' #Example 2- Rainfall/Q plots with sample start/end arrows
+#' RDB <- CedarRRain
+#' cedarSamples <- cedarSamples
+#' names(RDB)[2] <- "UVRain"
+#' RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
+#' eventListSamples <- RMeventsSamples(df=RDB2,ieHr=6,rain="UVRain",time="pdate",dfsamples=cedarSamples,bdate="pSstart",edate="pSend")
+#' dfQ <- cedarq
+#' dfQ <- RMprep(dfQ,prep.type=1,date.type=3,tz="CST6CDT")
+#' site.name <- "Example Site"
+#' SampleInfo <- TRUE
+#' sampbdate <- "pSstart"
+#' sampedate <- "pSend"
+#' pdf(paste(site.name,"_events.pdf",sep=""))
+#' RMeventsSamples.plotQ(RDB2,dfQ,rain="UVRain",df.events=eventListSamples,sdate="Braindate",edate="Eraindate",
+#' erain="depth",logy="",site.name=site.name,sampbdate="pSstart",sampedate="pSend")
+#' shell.exec(paste(site.name,"_events.pdf",sep=""))
 #' dev.off()
 RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q",
-                           df.events,sdate="StartDate",edate="EndDate", erain="depth",
-                           plot.buffer=3,logy="",site.name="") {
-    
+                                  df.events,sdate="StartDate",edate="EndDate", erain="depth",
+                                  plot.buffer=3,logy="",site.name="",SampleInfo, sampbdate='', sampedate='') {
+  
   df.events[,sdate] <- as.POSIXct(df.events[,sdate])
   df.events[,edate] <- as.POSIXct(df.events[,edate])  
   df <- rbind(df[1,],subset(df[-1,],rain>0.0))
   
-#   pdf(paste(site.name,"_events.pdf",sep=""))
+  #   pdf(paste(site.name,"_events.pdf",sep=""))
   
   # Define plot layout: panel 1 for Q and panel 2 for FIB
   mylayout <- matrix(c(1,
@@ -124,10 +149,11 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     abline(v=p.sdate,lty=3,col=colors()[100])
     abline(v=p.edate,lty=3,col=colors()[100])
     
-    arrows(df.events[i,sdate],(rmax-0.15),
-           df.events[i,edate],(rmax-0.15),
+    if(SampleInfo){
+    arrows(df.events[i,sampbdate],(max(subdfQ[,Q])),
+           df.events[i,sampedate],(max(subdfQ[,Q])),
            length=0.07,angle=20,col=colors()[84],
-           code=3) 
+           code=3)} 
     
     #  abline(v=df.events[i,sdate])
     #  abline(v=df.events[i,edate])
