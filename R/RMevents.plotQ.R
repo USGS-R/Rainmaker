@@ -80,9 +80,10 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     p.sdate <- as.POSIXct(df.events[i,sdate] - plot.buffer*24*3600/2,tz="")
     p.edate <- as.POSIXct(df.events[i,edate] + plot.buffer*24*3600/2,tz="")
     subdf <- subset(df, df[,date]>=p.sdate & df[,date]<=p.edate)
+    subdf1 <- subdf[order(subdf[,date]),] 
     rmax <- max(subdf[,rain] + 0.3)
-    subrain <- subdf[,rain]
-    subdate <- as.POSIXct(subdf[,date])
+    subrain <- subdf1[,rain]
+    subdate <- as.POSIXct(subdf1[,date])
     #Set Margins for first plot
     par(mar= c(0, 4, 4, 2) + 0.1)
     plot(subrain~subdate,
@@ -110,6 +111,9 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     
     ########################## Graph Q  ################################################
     subdfQ <- subset(dfQ, dfQ[,Qdate]>=p.sdate & dfQ[,Qdate]<=p.edate)
+    subdfQ1 <- subdfQ[order(subdfQ[,Qdate]),]
+    
+    
     Qmax <- max(subdfQ[,Q] *1.05)
     if(Qmax < 0) {Qmax <- Qmax*0.95}
     if(Qmax > 0) {Qmax <- Qmax*1.05} 
@@ -117,8 +121,8 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     if(Qmin <= 0) {Qmin <- Qmin*1.05; logy <- ""}
     if(Qmin > 0) {Qmin <- Qmin*0.95; logy <- logy}
     
-    subQ <- subdfQ[,Q]
-    subdateQ <- as.POSIXct(subdfQ[,date])
+    subQ <- subdfQ1[,Q]
+    subdateQ <- as.POSIXct(subdfQ1[,date])
     
     #Set Margins for second plot
     par(mar= c(5, 4, 0, 2) + 0.1)
@@ -150,10 +154,10 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     abline(v=p.edate,lty=3,col=colors()[100])
     
     if(SampleInfo){
-    arrows(df.events[i,sampbdate],(max(subdfQ[,Q])),
-           df.events[i,sampedate],(max(subdfQ[,Q])),
-           length=0.07,angle=20,col=colors()[84],
-           code=3)} 
+      arrows(df.events[i,sampbdate],(max(subdfQ[,Q])),
+             df.events[i,sampedate],(max(subdfQ[,Q])),
+             length=0.07,angle=20,col=colors()[84],
+             code=3)} 
     
     #  abline(v=df.events[i,sdate])
     #  abline(v=df.events[i,edate])
