@@ -7,6 +7,7 @@
 #' @param df dataframe with rainfall
 #' @param ieHr numeric Interevent period in hours, defaults to 6, 
 #' @param rainthresh numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")
+#' @param timeInterval numeric Minimum time interval between measurements in minutes, default is 1 minute
 #' @param rain string Column name of rainfall unit values, defaults to "rain"
 #' @param time string column with as.POSIXctdate, defaults to "pdate"
 #' @return list of storms and storms2
@@ -14,9 +15,9 @@
 #' @examples
 #' RDB <- CedarRRain
 #' RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-#' event.list <- RMevents(df=RDB2,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
+#' event.list <- RMevents(df=RDB2,ieHr=6,rainthresh=0.2,timeInterval=60,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
-RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
+RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="pdate"){
   
   ieSec <- ieHr * 3600 # compute interevent period in seconds to use with POSIX
   
@@ -61,6 +62,8 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
             stormnum <- stormnum + 1
             
             # After event period ends, save start and end dates/times and rain depth
+            # Adjust begin time to be one timeInterval before the first rainfall
+            df[StartRow,time] <- df[(StartRow+1),time] - timeInterval*60
             current.storm <- data.frame(stormnum=stormnum,
                                         StartDate=df[StartRow,time],
                                         EndDate=df[EndRow,time],
