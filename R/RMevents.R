@@ -7,7 +7,7 @@
 #' @param df dataframe with rainfall
 #' @param ieHr numeric Interevent period in hours, defaults to 6, 
 #' @param rainthresh numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")
-#' @param timeInterval numeric Minimum time interval between measurements in minutes, default is 1 minute
+#' @param timeInterval numeric Minimum time interval between measurements in seconds, default is 60 seconds
 #' @param rain string Column name of rainfall unit values, defaults to "rain"
 #' @param time string column with as.POSIXctdate, defaults to "pdate"
 #' @return list of storms and storms2
@@ -20,6 +20,7 @@
 RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="pdate"){
   
   ieSec <- ieHr * 3600 # compute interevent period in seconds to use with POSIX
+  dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
   
   # Initiate variables
   StartRow <- 1
@@ -63,7 +64,9 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="p
             
             # After event period ends, save start and end dates/times and rain depth
             # Adjust begin time to be one timeInterval before the first rainfall
-            df[StartRow,time] <- df[(StartRow+1),time] - timeInterval*60
+            
+            df[StartRow,time] <- df[(StartRow+1),time] - 
+              as.numeric(difftime(df[(StartRow+1),time], dateOrigin,units = 'sec')) %% timeInterval
             current.storm <- data.frame(stormnum=stormnum,
                                         StartDate=df[StartRow,time],
                                         EndDate=df[EndRow,time],
