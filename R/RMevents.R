@@ -50,14 +50,16 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="p
       if(df[i,rain]==0) {
         if(!continue.dry){
           continue.dry <- TRUE
-          dryduration <- difftime(df[i,time],
-                                  df[StartDryRow,time],
+          dryduration <- difftime(df[[time]][i],
+                                  df[[time]][StartDryRow],
                                   units="secs")
         }
         
         # Continue checking for end of event (dry duration >= interevent period)
         if(continue.dry){                   
-          dryduration <- difftime(df[i,time],df[StartDryRow,time],units="secs")
+          dryduration <- difftime(df[[time]][i],
+                                  df[[time]][StartDryRow],
+                                  units="secs")
           if(dryduration >= ieSec) {
             EndRow <- StartDryRow
             stormnum <- stormnum + 1
@@ -66,7 +68,7 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="p
             # Adjust begin time to be one timeInterval before the first rainfall
             
             df[StartRow,time] <- df[(StartRow+1),time] - 
-              as.numeric(difftime(df[(StartRow+1),time], dateOrigin,units = 'sec')) %% timeInterval
+              as.numeric(difftime(df[[time]][(StartRow+1)], dateOrigin,units = 'sec')) %% timeInterval
             current.storm <- data.frame(stormnum=stormnum,
                                         StartDate=df[StartRow,time],
                                         EndDate=df[EndRow,time],
