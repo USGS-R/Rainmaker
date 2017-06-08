@@ -7,7 +7,6 @@ Authors@R: c(
     email = "srcorsi@usgs.gov"),
     person("Rebecca","Carvin", role = c("aut"),
     email = "rbcarvin@usgs.gov"))
-Maintainer: Steve Corsi <srcorsi@usgs.gov>
 Description: More about what it does (maybe more than one line)
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
