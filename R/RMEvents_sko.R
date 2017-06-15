@@ -15,6 +15,14 @@
 #' @examples
 RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
+  if(!time %in% names(df)){
+    stop("Supplied 'time' column name not in df")
+  }
+  
+  if(all(is.na(df[[time]]))){
+    stop("All time values are NA")
+  }
+  
   ieMin <- ieHr * 60 # compute interevent period in minutes
   dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
   
