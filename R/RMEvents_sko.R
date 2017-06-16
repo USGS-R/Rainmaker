@@ -9,10 +9,8 @@
 #' @param rainthresh numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")
 #' @param rain string Column name of rainfall unit values, defaults to "rain"
 #' @param time string column with as.POSIXctdate, defaults to "pdate"
-#' @param tz define the timezone the data were collected in. For more information on timezone codes see https://en.wikipedia.org/wiki/Coordinated_Universal_Time 
 #' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms)
 #' @export
-#' @examples
 RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
   ieMin <- ieHr * 60 # compute interevent period in minutes

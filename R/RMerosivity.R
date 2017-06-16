@@ -1,4 +1,4 @@
-## Function RMErosivity
+## Function RMerosivity
 #' @param df dataframe with instantaneous rainfall, same df used for RMIntense
 #' @param StormSummary dataframe output by RMIntense, defaults to "StormSummary"
 #' @param rain string column name of rainfall unit values, defaults to "rain"
@@ -7,7 +7,7 @@
 #' method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct computation of formula 2 found in AH537
 #' method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, based on equation in Agriculture Handbook 537. Storms with I30>2.5 are incorrectly computed.
 
-RMErosivity <- function(df, StormSummary, rain = "rain", method=1){
+RMerosivity <- function(df, StormSummary, rain = "rain", method=1){
   #Prep file for computation
   library(dplyr)
   
