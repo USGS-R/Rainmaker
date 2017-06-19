@@ -40,7 +40,7 @@ RMIntense <- function(df,date="r.date",rain = "rain",
     #   in units/hr
     
     for (j in 1:nrow(df.events)) {
-      subdf <- subset(df,df[,date] >= df.events[j,sdate] & df[,date] <= df.events[j,edate])
+      subdf <- df[df[,date] >= df.events[j,sdate] & df[,date] <= df.events[j,edate],]
       # Initialize intensity vector
       intensity <- numeric(length=nrow(subdf))
       
@@ -48,7 +48,7 @@ RMIntense <- function(df,date="r.date",rain = "rain",
         enddate <- subdf[k,date]+x
         bdate <- subdf[k,date]
         
-        subdf2 <- subset(subdf,subdf[,date] >= bdate & subdf[,date] < enddate)
+        subdf2 <- subdf[subdf[,date] >= bdate & subdf[,date] < enddate,]
         intensity[k] <- sum(subdf2[,rain])/(x/60/60)
         
         #      k;bdate;enddate;intensity[k];max(subdf2$rain)
