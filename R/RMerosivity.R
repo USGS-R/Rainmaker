@@ -1,4 +1,4 @@
-## Function RMerosivity
+## Function RMErosivity
 #' @param df dataframe with instantaneous rainfall, same df used for RMIntense
 #' @param StormSummary dataframe output by RMIntense, defaults to "StormSummary"
 #' @param rain string column name of rainfall unit values, defaults to "rain"
@@ -7,7 +7,7 @@
 #' method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct computation of formula 2 found in AH537
 #' method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, based on equation in Agriculture Handbook 537. Storms with I30>2.5 are incorrectly computed.
 
-RMerosivity <- function(df, StormSummary, rain = "rain", method=1){
+RMErosivity <- function(df, StormSummary, rain = "rain", method=1){
   #Prep file for computation
   library(dplyr)
   
@@ -15,19 +15,20 @@ RMerosivity <- function(df, StormSummary, rain = "rain", method=1){
     stop(rain, " not in df")
   }
   
+  #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = PrecipPrep$pdate[1] - 60*60*24)
   names(x)[names(x) == "rain"] <- rain
   
   df <- bind_rows(x, df)
   
+  #find incremental intensity, being sure that the timegap at the start of the event is the start time - the minumum timeInterval
+  if (df$events[i] != df$events[i-1]) { df$StartDate[i] <- df$StartDate[i]-timeInterval }
   df$time_gap <- NA
-  df$time_gap[-1] <- diff(df$pdate, lag = 1)
+  df$time_gap[-1] <- diff(df$pdate, lag = 1) ### @limnoliver This is the line that is causing trouble
   df$intensity <- 60*df[[rain]]/df$time_gap
   
   StormSummary$energy <- NA
-  
-  
   
   #compute incremental energy using desired method
   if(method==1) df$energy <- df[[rain]]*(1099*(1-0.72*exp(-2.08*df$intensity)))
