@@ -7,7 +7,7 @@
 #' method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct computation of formula 2 found in AH537
 #' method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, based on equation in Agriculture Handbook 537. Storms with I30>2.5 are incorrectly computed.
 
-RMErosivity <- function(df, StormSummary, rain = "rain", method=1){
+RMErosivity <- function(df, StormSummary, timeInterval, rain = "rain", method=1){
   #Prep file for computation
   library(dplyr)
   
@@ -18,14 +18,34 @@ RMErosivity <- function(df, StormSummary, rain = "rain", method=1){
   #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = PrecipPrep$pdate[1] - 60*60*24)
-  names(x)[names(x) == "rain"] <- rain
-  
+  #names(x)[names(x) == "rain"] <- rain #not working
   df <- bind_rows(x, df)
+ 
+  #find the time between each row, place that value in a column titled "time_gap"
+  df$time_between <- NA
+  df$time_between[-1] <- diff(df$pdate, lag = 1)
+  dif_time <- diff(df[,'pdate'])
+  ieMin = 60*ieHr
+  #timeInterval <- 1 #I gave up trying to compute this with POSIXct and just assigned it
   
-  #find incremental intensity, being sure that the timegap at the start of the event is the start time - the minumum timeInterval
-  if (df$events[i] != df$events[i-1]) { df$StartDate[i] <- df$StartDate[i]-timeInterval }
+  #re-establish the event numbers
+  df["event"] <- NA
+  df[1, "event"] <- 1
+  for (i in 2:nrow(df)){
+    if (dif_time[[i-1]] >= ieMin) {
+      df$event[i] <- df$event[i-1] + 1
+    } else {
+      df$event[i] <- df$event[i-1]
+    }
+  }
+  
+  #if the event number is the same as the line above, fill in with "time_between", else fill in with timeInterval
   df$time_gap <- NA
-  df$time_gap[-1] <- diff(df$pdate, lag = 1) ### @limnoliver This is the line that is causing trouble
+  for(i in 2:nrow(df)){
+    df$time_gap[i] <- ifelse(df$event[i] == df$event[i-1], df$time_between[i], timeInterval)
+  }
+  
+  #find incremental intensity
   df$intensity <- 60*df[[rain]]/df$time_gap
   
   StormSummary$energy <- NA
