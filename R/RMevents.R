@@ -22,28 +22,38 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="p
   ieSec <- ieHr * 3600 # compute interevent period in seconds to use with POSIX
   dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
   
-  # Initiate variables
-  StartRow <- 1
-  EndRow <- 1
-  StartDryRow <- 1
-  dry <- TRUE
+  df <- df[df[rain] != 0,]
+  df <- df[df[rain] > 0.00001,]
   stormnum <- 0
-  continue.dry <- TRUE
-  sumrain <- 0
   
-  # Loop through rain data and define event periods
+  dif_time <- diff(df[[time]])
+  which(dif_time > ieSec)
   for (i in 2:nrow(df)) {
     
-    # During dry period, look for start of event
+  }
+  
+   # Initiate variables
+   StartRow <- 1
+   EndRow <- 1
+   StartDryRow <- 1
+   dry <- FALSE
+   stormnum <- 0
+   continue.dry <- FALSE
+   sumrain <- 0
+  
+ #Loop through rain data and define event periods
+  for (i in 2:nrow(df)) {
+
+   # During dry period, look for start of event
     if(dry) {
-      
+
       # Event initiation
-      if(df[i,rain]>0) {  
+      if(df[i,rain]>0 ) {
         dry=FALSE
         StartRow <- i-1
       }
     }
-    # Define event period
+    #Define event period
     if(!dry) {
       
       # Search for end of event period
@@ -90,7 +100,7 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="p
       }
     }
   }
-  
+
   # Subset based on defined event rain depth threshold        
   storms2 <- subset(storms,rain>=rainthresh,row.names=FALSE)
   
