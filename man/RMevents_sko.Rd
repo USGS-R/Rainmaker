@@ -17,8 +17,6 @@ RMevents_sko(df, ieHr = 6, rainthresh = 5.1, rain = "rain",
 \item{rain}{string Column name of rainfall unit values, defaults to "rain"}
 
 \item{time}{string column with as.POSIXctdate, defaults to "pdate"}
-
-\item{tz}{define the timezone the data were collected in. For more information on timezone codes see https://en.wikipedia.org/wiki/Coordinated_Universal_Time}
 }
 \value{
 list of all rain events that surpass rainthresh (storms2) and all rain events (storms)
