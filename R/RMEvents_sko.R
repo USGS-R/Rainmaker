@@ -9,7 +9,9 @@
 #' @param rainthresh numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")
 #' @param rain string Column name of rainfall unit values, defaults to "rain"
 #' @param time string column with as.POSIXctdate, defaults to "pdate"
-#' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms)
+#' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
+#' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
+#' the minimum time difference between observations (timeInterval)
 #' @export
 RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
@@ -32,6 +34,8 @@ RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
   dif_time <- diff(df[[time]])
   timeInterval <- min(dif_time)
+  df$dif_time[2:nrow(df)] <- dif_time
+  
   
   # loop that assigns each row to an event number based on dif_time
   for (i in 2:nrow(df)){
@@ -53,6 +57,6 @@ RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
                        EndDate = end.dates,
                        rain = rain.events[,2])
   out2 <- subset(out, rain >= rainthresh, row.names = FALSE)
-  return(list(storms2 = out2, storms = out))
+  return(list(storms2 = out2, storms = out, tipsbystorm = df[,c('rain', 'pdate', 'time_diff','event')], timeInterval = timeInterval))
 }
   
