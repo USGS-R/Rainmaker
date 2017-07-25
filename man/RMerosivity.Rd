@@ -2,8 +2,7 @@
 % Please edit documentation in R/RMerosivity.R
 \name{RMerosivity}
 \alias{RMerosivity}
-\title{RMerosivity
-This function computes the erosive power of the rainfall}
+\title{RMerosivity}
 \usage{
 RMerosivity(df, ieHr, timeInterval, method, rain = "rain",
   StormSummary = StormSummary)
@@ -23,10 +22,20 @@ assumed to be the time it took for precip to accumulate in the collector before 
 \item{StormSummary}{dataframe output by RMIntense, defaults to "StormSummary"
 
 method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
+
 method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct computation of formula 2 found in AH537
+
 method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, based on equation in Agriculture Handbook 537. Storms with I30>2.5 are incorrectly computed.}
 }
 \description{
-RMerosivity
 This function computes the erosive power of the rainfall
+}
+\references{
+McGregor, K. C., R. L. Binger, A. J. Bowie, and G. R. Foster. 1995. Erosivity index values for northern Mississippi. Trans. Amer. Soc. Agric. Eng. 38:1039-1047;
+
+Wischmeier, W. H. and D. D. Smith. 1978. Predicting rainfall erosion losses—A guide to conservation planning. U.S. Department of Agriculture, Agriculture Handbook 537, 58 pp.
+
+Wischmeier, W. H. and D. D. Smith. 1981. Supplement and Errata for "Predicting rainfall erosion losses—A guide to conservation planning". U.S. Department of Agriculture, Agriculture Handbook 537, 58 pp.
+
+Renard, K. G., G. R. Foster, G. A. Weesies, D. K. McCool, and D. C. Yoder. 1997. Predicting soil erosion by water: A guide to conservation planning with the Revised Soil Loss Equation (RUSLE). U.S. Department of Agriculture, Agriculture Handbook 703, 404 pp.
 }
