@@ -57,6 +57,6 @@ RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
                        EndDate = end.dates,
                        rain = rain.events[,2])
   out2 <- subset(out, rain >= rainthresh, row.names = FALSE)
-  return(list(storms2 = out2, storms = out, tipsbystorm = df[,c('rain', 'pdate', 'time_diff','event')], timeInterval = timeInterval))
+  return(list(storms2 = out2, storms = out, tipsbystorm = df[,c('rain', 'pdate', 'dif_time', 'event')], timeInterval = timeInterval))
 }
   
