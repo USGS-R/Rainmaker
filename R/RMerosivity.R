@@ -1,6 +1,6 @@
 #' RMerosivity
-#' This function computes the erosive power of the rainfall
-#'
+#' 
+#' @description This function computes the erosive power of the rainfall
 #' @param df dataframe with instantaneous rainfall, same df used for RMIntense
 #' @param ieHr time between events in hours
 #' @param timeInterval the minimum time between rows of data, 
