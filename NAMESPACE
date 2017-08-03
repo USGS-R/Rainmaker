@@ -2,6 +2,7 @@
 
 export(RMIntense)
 export(RMarf)
+export(RMerosivity)
 export(RMevents)
 export(RMevents.plot)
 export(RMevents.plotQ)

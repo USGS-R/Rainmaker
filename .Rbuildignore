@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 Rainmaker.Rproj
 .travis.yml
+R\Workflow.R
