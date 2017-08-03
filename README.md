@@ -1,8 +1,19 @@
-Rainmaker
-================
-2017-06-06
-
 =========
+
+Package Status
+--------------
+
+| Linux                                                                                                         | Windows                                                                                                                                           | Test Coverage                                                                                                                                                | USGS Status                                                                                                     |
+|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [![travis](https://travis-ci.org/USGS-R/Rainmaker.svg?branch=master)](https://travis-ci.org/USGS-R/Rainmaker) | [![Build status](https://ci.appveyor.com/api/projects/status/i2hr35abwxx85vgs?svg=true)](https://ci.appveyor.com/project/ldecicco-USGS/Rainmaker) | [![Coverage Status](https://coveralls.io/repos/github/USGS-R/Rainmaker/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/Rainmaker?branch=master) | [![status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research) |
+
+### Reporting bugs
+
+Please consider reporting bugs and asking questions on the Issues page: <https://github.com/USGS-R/Rainmaker/issues>
+
+### Code of Conduct
+
+We want to encourage a warm, welcoming, and safe environment for contributing to this project. See the [code of conduct](https://github.com/USGS-R/Rainmaker/blob/master/CONDUCT.md) for more information.
 
 Installation
 ------------
