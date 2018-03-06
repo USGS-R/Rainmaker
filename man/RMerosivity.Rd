@@ -4,19 +4,22 @@
 \alias{RMerosivity}
 \title{RMerosivity}
 \usage{
-RMerosivity(df = tipsbystorm, ieHr, method, rain = "rain",
-  StormSummary = StormSummary)
+RMerosivity(df, ieHr, method, rain = "rain", StormSummary = StormSummary)
 }
 \arguments{
-\item{df}{dataframe with instantaneous rainfall and events calculated, the 'tipsbystorm' output from RMevents_sko}
+\item{df}{dataframe with instantaneous rainfall and events calculated. This is the 'tipsbystorm' 
+output from RMevents, or the third list component from the output of RMevents. This dataframe 
+must include colums for rain values, dates, 'dif_time' or the time elapsed from one tip (row) to the 
+next, and 'event' which numbers each row or tip by which event to which it belongs 
+(starting at 1).}
 
 \item{ieHr}{time between events in hours}
 
-\item{method}{choose which energy equation to use (see below)}
+\item{method}{choose which energy equation to use (see below for more details)}
 
-\item{rain}{string column name of rainfall unit values, defaults to "rain"}
+\item{rain}{string, column name of rainfall unit values, defaults to "rain"}
 
-\item{StormSummary}{dataframe output by RMIntense, defaults to "StormSummary"
+\item{StormSummary}{dataframe output by RMIntense
 
 method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
 

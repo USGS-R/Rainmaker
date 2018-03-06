@@ -1,3 +1,5 @@
+#' RMevents
+#' 
 #' Rainfall event determination
 #' 
 #' @description
@@ -13,7 +15,7 @@
 #' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
 #' the minimum time difference between observations (timeInterval)
 #' @export
-RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
+RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
   if(!time %in% names(df)){
     stop("Supplied 'time' column name not in df")

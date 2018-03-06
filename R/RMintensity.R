@@ -1,4 +1,4 @@
-#' RMIntense
+#' RMintensity
 #'
 #' Function to compute maximum x-minute rainfall intensities in units of depth/hr
 #'
@@ -19,7 +19,7 @@
 #' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
 #' intensities <- RMIntense(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",events.0.2,sdate="StartDate",edate="EndDate",depth="rain",xmin=c(5,15,30))
-RMIntense <- function(df,date="r.date",rain = "rain",
+RMintensity <- function(df,date="r.date",rain = "rain",
                       df.events,sdate="StartDate",edate="EndDate",
                       depth="depth",
                       xmin=c(60,180,360)) {
