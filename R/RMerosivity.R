@@ -1,11 +1,15 @@
 #' RMerosivity
 #' 
 #' @description This function computes the erosive power of the rainfall
-#' @param df dataframe with instantaneous rainfall and events calculated, the 'tipsbystorm' output from RMevents_sko
+#' @param df dataframe with instantaneous rainfall and events calculated. This is the 'tipsbystorm' 
+#' output from RMevents, or the third list component from the output of RMevents. This dataframe 
+#' must include colums for rain values, dates, 'dif_time' or the time elapsed from one tip (row) to the 
+#' next, and 'event' which numbers each row or tip by which event to which it belongs 
+#' (starting at 1). 
 #' @param ieHr time between events in hours
-#' @param method choose which energy equation to use (see below)
-#' @param rain string column name of rainfall unit values, defaults to "rain"
-#' @param StormSummary dataframe output by RMIntense, defaults to "StormSummary"
+#' @param method choose which energy equation to use (see below for more details)
+#' @param rain string, column name of rainfall unit values, defaults to "rain"
+#' @param StormSummary dataframe output by RMIntense
 #' 
 #' method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
 #' 
@@ -22,7 +26,7 @@
 #' 
 #' Renard, K. G., G. R. Foster, G. A. Weesies, D. K. McCool, and D. C. Yoder. 1997. Predicting soil erosion by water: A guide to conservation planning with the Revised Soil Loss Equation (RUSLE). U.S. Department of Agriculture, Agriculture Handbook 703, 404 pp.
 
-RMerosivity <- function(df = tipsbystorm, ieHr, method, rain="rain", StormSummary=StormSummary){
+RMerosivity <- function(df, ieHr, method, rain="rain", StormSummary=StormSummary){
   #Prep file for computation
   library(dplyr)
   
