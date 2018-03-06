@@ -4,16 +4,13 @@
 \alias{RMerosivity}
 \title{RMerosivity}
 \usage{
-RMerosivity(df, ieHr, timeInterval, method, rain = "rain",
+RMerosivity(df = tipsbystorm, ieHr, method, rain = "rain",
   StormSummary = StormSummary)
 }
 \arguments{
-\item{df}{dataframe with instantaneous rainfall, same df used for RMIntense}
+\item{df}{dataframe with instantaneous rainfall and events calculated, the 'tipsbystorm' output from RMevents_sko}
 
 \item{ieHr}{time between events in hours}
-
-\item{timeInterval}{the minimum time between rows of data, 
-assumed to be the time it took for precip to accumulate in the collector before the first tip of an event}
 
 \item{method}{choose which energy equation to use (see below)}
 

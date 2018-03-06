@@ -1,13 +1,15 @@
 #' RMerosivity
 #' 
 #' @description This function computes the erosive power of the rainfall
-#' @param df dataframe with instantaneous rainfall, same df used for RMIntense
+#' @param df dataframe with instantaneous rainfall and events calculated. This is the 'tipsbystorm' 
+#' output from RMevents, or the third list component from the output of RMevents. This dataframe 
+#' must include colums for rain values, dates, 'dif_time' or the time elapsed from one tip (row) to the 
+#' next, and 'event' which numbers each row or tip by which event to which it belongs 
+#' (starting at 1). 
 #' @param ieHr time between events in hours
-#' @param timeInterval the minimum time between rows of data, 
-#'   assumed to be the time it took for precip to accumulate in the collector before the first tip of an event 
-#' @param method choose which energy equation to use (see below)
-#' @param rain string column name of rainfall unit values, defaults to "rain"
-#' @param StormSummary dataframe output by RMIntense, defaults to "StormSummary"
+#' @param method choose which energy equation to use (see below for more details)
+#' @param rain string, column name of rainfall unit values, defaults to "rain"
+#' @param StormSummary dataframe output by RMIntense
 #' 
 #' method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
 #' 
@@ -24,7 +26,7 @@
 #' 
 #' Renard, K. G., G. R. Foster, G. A. Weesies, D. K. McCool, and D. C. Yoder. 1997. Predicting soil erosion by water: A guide to conservation planning with the Revised Soil Loss Equation (RUSLE). U.S. Department of Agriculture, Agriculture Handbook 703, 404 pp.
 
-RMerosivity <- function(df, ieHr, timeInterval, method, rain="rain", StormSummary=StormSummary){
+RMerosivity <- function(df, ieHr, method, rain="rain", StormSummary=StormSummary){
   #Prep file for computation
   library(dplyr)
   
@@ -32,43 +34,31 @@ RMerosivity <- function(df, ieHr, timeInterval, method, rain="rain", StormSummar
     stop(rain, " not in df")
   }
   
-  #Add a line here to remove any zeroes in the df
+  # calculate minimum time difference between  rain observatins
+  timeInterval <- min(df$dif_time, na.rm = T)
   
   #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = df$pdate[1] - 60*60*24)
+  names(x)[1] <- rain
   df <- bind_rows(x, df)
   
-  #find the time between each row, place that value in a column titled "time_gap"
-  df$time_between <- NA
-  df$time_between[-1] <- diff(df$pdate, lag = 1)
-  dif_time <- diff(df[,'pdate'])
   ieMin = 60*ieHr
   
-  #re-establish the event numbers
-  df["event"] <- NA
-  df[1, "event"] <- 1
-  for (i in 2:nrow(df)){
-    if (dif_time[[i-1]] >= ieMin) {
-      df$event[i] <- df$event[i-1] + 1
-    } else {
-      df$event[i] <- df$event[i-1]
-    }
-  }
-  
+
   #if the event number is the same as the line above, fill time_gap column with "time_between", else fill in with timeInterval
   df$time_gap <- NA
   for(i in 2:nrow(df)){
-    df$time_gap[i] <- ifelse(df$event[i] == df$event[i-1], df$time_between[i], timeInterval)
+    df$time_gap[i] <- ifelse(df$event[i] == df$event[i-1], df$dif_time[i], timeInterval)
   }
   
   #find incremental intensity
-  df$intensity <- 60*df$rain/df$time_gap
+  df$intensity <- 60*df[,rain]/df$time_gap
   
   #find incremental energy
   df$energy <- NA
   df$energy <- ifelse(df$intensity < 3,
-                      df$rain*(916+331*log10(df$intensity)),
+                      df[,rain]*(916+331*log10(df$intensity)),
                       1074*df$rain)
   
   #compute incremental energy using desired method

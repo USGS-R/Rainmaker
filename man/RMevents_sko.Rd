@@ -19,7 +19,9 @@ RMevents_sko(df, ieHr = 6, rainthresh = 5.1, rain = "rain",
 \item{time}{string column with as.POSIXctdate, defaults to "pdate"}
 }
 \value{
-list of all rain events that surpass rainthresh (storms2) and all rain events (storms)
+list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
+a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
+the minimum time difference between observations (timeInterval)
 }
 \description{
 Compute rainfall event variables based on time series of rain data with only one rain
