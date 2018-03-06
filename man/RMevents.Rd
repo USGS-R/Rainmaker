@@ -2,7 +2,7 @@
 % Please edit documentation in R/RMevents.R
 \name{RMevents}
 \alias{RMevents}
-\title{Rainfall event determination}
+\title{RMevents}
 \usage{
 RMevents(df, ieHr = 6, rainthresh = 5.1, rain = "rain", time = "pdate")
 }
@@ -25,4 +25,7 @@ the minimum time difference between observations (timeInterval)
 \description{
 Compute rainfall event variables based on time series of rain data with only one rain
 gage or one mean radar rain column.
+}
+\details{
+Rainfall event determination
 }

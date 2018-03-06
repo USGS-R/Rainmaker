@@ -1,3 +1,5 @@
+#' RMevents
+#' 
 #' Rainfall event determination
 #' 
 #' @description
