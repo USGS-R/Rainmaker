@@ -2,8 +2,9 @@
 #' 
 #' @description
 #' Compute rainfall event variables based on time series of rain data with only 
-#' one rain gage or one mean radar rain column, and the beginning and ending 
-#' dates of sampling periods
+#' one rain gage or one mean radar rain column. The function does not calculate events based on
+#' the rain data itself (such as in RMevents), but rather calculates event variables based on an input
+#' of event start and end times. 
 #' 
 #' @param df dataframe with rainfall
 #' @param ieHr numeric Interevent period in hours, defaults to 6, 
