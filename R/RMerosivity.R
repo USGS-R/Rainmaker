@@ -31,11 +31,12 @@ RMerosivity <- function(df = tipsbystorm, ieHr, method, rain="rain", StormSummar
   }
   
   # calculate minimum time difference between  rain observatins
-  timeInterval <- min(df$dif_time)
+  timeInterval <- min(df$dif_time, na.rm = T)
   
   #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = df$pdate[1] - 60*60*24)
+  names(x)[1] <- rain
   df <- bind_rows(x, df)
   
   ieMin = 60*ieHr
@@ -48,12 +49,12 @@ RMerosivity <- function(df = tipsbystorm, ieHr, method, rain="rain", StormSummar
   }
   
   #find incremental intensity
-  df$intensity <- 60*df$rain/df$time_gap
+  df$intensity <- 60*df[,rain]/df$time_gap
   
   #find incremental energy
   df$energy <- NA
   df$energy <- ifelse(df$intensity < 3,
-                      df$rain*(916+331*log10(df$intensity)),
+                      df[,rain]*(916+331*log10(df$intensity)),
                       1074*df$rain)
   
   #compute incremental energy using desired method
