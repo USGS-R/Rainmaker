@@ -7,7 +7,12 @@ Authors@R: c(
     email = "srcorsi@usgs.gov"),
     person("Rebecca","Carvin", role = c("aut"),
     email = "rbcarvin@usgs.gov"))
-Description: More about what it does (maybe more than one line)
+Description: Rainmaker is a collection of functions used to process instantaneous 
+    rainfall data to define event rainfall depths, rainfall intensities, rainfall 
+    erosivity and antecedent rainfall values. Event definition can be determined 
+    solely within rainmaker using the instantaneous rainfall data or can be 
+    focused directly on dates and times of interest (for example, using specific 
+    water quality sampling periods).
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
     that originally came from the United States Geological Survey, an agency of
