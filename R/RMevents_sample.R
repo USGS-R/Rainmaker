@@ -37,7 +37,9 @@ RMevents_sample <- function(df,
   df.orig <- df
   df <- rbind(df[1,],df[df[,rain]>0,])
   timediff <- difftime(df[2:(nrow(df)),time],df[1:(nrow(df)-1),time],units="secs")
+  timediff_min <- difftime(df[2:(nrow(df)),time],df[1:(nrow(df)-1),time],units="mins")
   df$timediff <- c(NA,timediff)
+  df$timediff_min <- c(NA, timediff_min)
   #  dfsamples$Braindate <- dfsamples$bpdate
   #  dfsamples$Eraindate <- dfsamples$epdate
   
@@ -45,35 +47,96 @@ RMevents_sample <- function(df,
   rainDepth <- numeric()
   startRainDates <- numeric()
   endRainDates <- numeric()
+  tipsbystorm <- data.frame()
  
   for (i in 1:nrow(dfsamples)){
     beginRow <- max(which(df[,time]<dfsamples[i,bdate])+1)
+    # this fails if you have an event that is not captured in your rain data
+    if(i ==1 & is.infinite(beginRow)) {
+      startRainDates <- NA
+      endRainDates <- NA
+      rainDepth <- NA
+      next
+    }
+    
+    if (i > 1 & is.infinite(beginRow)) {
+      startRainDates <- c(startRainDates, NA)
+      endRainDates <- c(endRainDates, NA)
+      rainDepth <- c(rainDepth, NA)
+      next
+    }
+    
     endRow <- max(which(df[,time]<dfsamples[i,edate]))
     subdf <- df[c(1:beginRow),]
     startRainRow <- max(which(subdf$timediff>ieSec))
-    if(startRainRow==dim(subdf)[1]) {BD <- dfsamples[i,bdate]
-    } else {BD <- subdf[startRainRow,time]}
+    if (startRainRow == dim(subdf)[1]) {
+      BD <- dfsamples[i,bdate]
+    } else {
+      BD <- subdf[startRainRow,time]
+    }
     subdf2 <- df[c(startRainRow:endRow),]
-    if(sum(subdf2[,rain]>0)>0){
+    
+    if (sum(subdf2[,rain]>0)>0) {
       endRainRow <- max(which(subdf2[,rain]>0))
       ED <- subdf2[endRainRow,time]
       if(ED<BD) ED <- BD + 60
-    }else{endRainRow <- startRainRow
-          ED <- BD + 60
+      
+    } else {
+      endRainRow <- startRainRow
+      ED <- BD + 60
     }
     eventRows <- which(df.orig[,time]>=BD & df.orig[,time]<=ED)
+    eventRows_tips <- which(df[,time]>=BD & df[,time]<=ED)
+    
     eventRain <- ifelse(length(eventRows)>0,sum(df.orig[eventRows,rain]),0)
     rainDepth <- c(rainDepth,eventRain)
-    if(i ==1) {startRainDates <- BD
-               endRainDates <- ED
-    }else {startRainDates <- c(startRainDates,BD)
-           endRainDates <- c(endRainDates,ED)}
-  }  
-  dfsamples$Braindate <- startRainDates
-  dfsamples$Eraindate <- endRainDates
-  dfsamples$depth <- rainDepth
+    
+    # get data frame of all rain from this event, add event id column
+    sub_tips <- df[eventRows_tips, ]
+    
+    
+    if(i ==1) {
+      startRainDates <- BD
+      endRainDates <- ED
+      if (nrow(sub_tips) > 0) {
+        event <- 1
+      } else {
+        event <- 0
+      }
+      if (nrow(sub_tips) > 0){
+        sub_tips$event <- event
+      }
+      tipsbystorm <- sub_tips
+    } else {
+      startRainDates <- c(startRainDates,BD)
+      endRainDates <- c(endRainDates,ED)
+      if (nrow(sub_tips) > 0) {
+        event <- event + 1
+      } else {
+        event <- event
+      }
+      if (nrow(sub_tips) > 0){
+        sub_tips$event <- event
+      }
+      
+      tipsbystorm <- rbind(tipsbystorm, sub_tips)
+    }
+  }
   
-  return(dfsamples)
+  dfsamples$StartDate <- startRainDates
+  dfsamples$EndDate <- endRainDates
+  dfsamples$rain <- rainDepth
+  dfsamples$stormnum <- 1:nrow(dfsamples)
+  
+  dfsamples <- dfsamples[,c('stormnum', 'StartDate', 'EndDate', 'rain')]
+  timeInterval <- min(timediff_min, na.rm = T)
+  tipsbystorm <- tipsbystorm[,c(rain, time, 'timediff_min', 'event')]
+  names(tipsbystorm)[3] <- 'dif_time'
+  
+  out <- list(dfsamples, dfsamples, tipsbystorm, timeInterval)
+  names(out) <- c('storms2', 'storms', 'tipsbystorm', 'timeInterval')
+  
+  return(out)
 }
 
 ##########################################################################################
