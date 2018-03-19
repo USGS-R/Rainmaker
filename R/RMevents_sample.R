@@ -56,6 +56,7 @@ RMevents_sample <- function(df,
       startRainDates <- NA
       endRainDates <- NA
       rainDepth <- NA
+      event <- 0
       next
     }
     
@@ -108,8 +109,8 @@ RMevents_sample <- function(df,
       }
       tipsbystorm <- sub_tips
     } else {
-      startRainDates <- c(startRainDates,BD)
-      endRainDates <- c(endRainDates,ED)
+      startRainDates <- as.POSIXct(c(startRainDates,BD), origin = "1970-01-01")
+      endRainDates <- as.POSIXct(c(endRainDates,ED), origin = "1970-01-01")
       if (nrow(sub_tips) > 0) {
         event <- event + 1
       } else {
