@@ -28,6 +28,12 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   ieMin <- ieHr * 60 # compute interevent period in minutes
   dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
   
+  # make sure data are arranged in order by time
+  df <- df[order(df[,time]), ]
+  
+  # be sure to remove any repeated rows
+  df <- unique(df)
+  
   
   df <- df[df[rain] != 0,]
   df <- df[df[rain] > 0.00001,]
