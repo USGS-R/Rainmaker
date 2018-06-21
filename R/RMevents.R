@@ -14,8 +14,8 @@
 #' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
 #' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
 #' the minimum time difference between observations (timeInterval)
-#' @importFrom lubridate tz
 #' @import dplyr
+#' @importFrom sym rlang
 #' @export
 RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
@@ -61,11 +61,11 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   rain.events <- aggregate(x = df[[rain]], by = list(df$event), sum) #find sum of rain in each event
   
   # create new variable so can use in dplyr function
-  time_quo <- enquo(time)
+  time_quo <- sym(time)
   start.dates <- group_by(df, event) %>%
     summarize(start_date = min(!!time_quo)) #find minimum date for each event
   
-  start.dates$start_date - timeInterval
+  start.dates <- start.dates$start_date - timeInterval
   
   end.dates <- group_by(df, event) %>%
     summarize(end_date = max(!!time_quo))
