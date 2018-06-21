@@ -15,7 +15,7 @@
 #' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
 #' the minimum time difference between observations (timeInterval)
 #' @import dplyr
-#' @importFrom sym rlang
+#' @importFrom rlang sym
 #' @export
 RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
