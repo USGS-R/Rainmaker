@@ -3,17 +3,17 @@
 #' @description
 #' Discharge event determination - calculates event start and end times based on discharge record.
 #'
-#' @details When a discharge measurement is above qthresh, the algorthim decides whether it belongs to a 
+#' @details When a discharge measurement is above \code{qthresh}, the algorthim decides whether it belongs to a 
 #' "new" event by looking backwards at the last measurement above qthresh. If the difference in time 
-#' is greater than ieHr, then a new event begins. The start and end times of each event, 
+#' is greater than \code{ieHr}, then a new event begins. The start and end times of each event, 
 #' however, are adjusted to the previous or next timestamp, respectively, to account for the "tails" of
 #' the event. The consequence of adjusting the start and end times, however, is that depending on the frequency 
-#' of discharge observations, two observations above qthresh that are greater than ieHr apart (and therefore in seperate events)
-#' can have start and end times that are closer together than ieHr. If ieHr_check = TRUE (default), the algorithm makes a
+#' of discharge observations, two observations above \code{qthresh} that are greater than ieHr apart (and therefore in seperate events)
+#' can have start and end times that are closer together than \code{ieHr}. If \code{ieHr_check = TRUE} (default), the algorithm makes a
 #' final pass through the events dataset and checks for any events that are closer in time than ieHr. If so, 
-#' it will combine those events. If ieHr_check = FALSE, the algorithm will leave the events as-is, and depending 
-#' on discharge measurement frequency and ieHr, you may see events that are closer together than ieHr. In most use-cases, 
-#' ieHr_check = TRUE is appropriate. However, if discharge measurements are infrequent, and the adjustment to the start 
+#' it will combine those events. If \code{ieHr_check = FALSE}, the algorithm will leave the events as-is, and depending 
+#' on discharge measurement frequency and \code{ieHr}, you may see events that are closer together than ieHr. In most use-cases, 
+#' \code{ieHr_check = TRUE} is appropriate. However, if discharge measurements are infrequent, and the adjustment to the start 
 #' and end times are significant, the user may not want the secondary filter on the events. 
 #' 
 #' @param df dataframe that contains discharge and timestamps
