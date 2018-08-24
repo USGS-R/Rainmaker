@@ -128,7 +128,8 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
     out <- group_by(out, event_check) %>%
       summarize(stormnum = first(event_check),
                 StartDate = min(StartDate), 
-                EndDate = max(EndDate))
+                EndDate = max(EndDate)) %>%
+      select(-event_check)
   }
   return(out)
 }
