@@ -2,26 +2,45 @@
 % Please edit documentation in R/discharge_events.R
 \name{discharge_events}
 \alias{discharge_events}
-\title{discharge_events}
+\title{Calculate events from discharge record}
 \usage{
 discharge_events(df, ieHr = 6, qthresh, discharge = "Value",
-  time = "pdate")
+  time = "pdate", ieHr_check = TRUE)
 }
 \arguments{
-\item{df}{dataframe with discharge}
+\item{df}{dataframe that contains discharge and timestamps}
 
-\item{ieHr}{numeric Interevent period in hours, defaults to 6. 
+\item{ieHr}{numeric, Interevent period in hours, defaults to 6. 
 The amount of time between discharge measurements above threshold required to be considered a new event.}
 
-\item{qthresh}{numeric Discharge threshold value, over which an event is considered to be occuring.}
+\item{qthresh}{numeric, Discharge threshold value, over which an event is considered to be occuring.}
 
-\item{discharge}{string Column name where discharge values are stored. Defaults to "Value".}
+\item{discharge}{string, Column name where discharge values are stored. Defaults to "Value".}
 
-\item{time}{string column name where dates are stored as POSIXct values, defaults to "pdate"}
+\item{time}{string, column name where dates are stored as POSIXct values, defaults to "pdate".}
+
+\item{ieHr_check}{logical, whether to check the calculated events data frame for events that are closer
+together than ieHr. This can happen due to the start and end time corrections for the "tails" of the event. 
+If TRUE, events closer than ieHr apart will be combined. If FALSE, events will be left as-is. 
+See the details section below for more information.}
 }
 \value{
 dataframe of all discharge events based on ieHr and qthresh criteria. Includes start and end times for each event.
 }
 \description{
 Discharge event determination - calculates event start and end times based on discharge record.
+}
+\details{
+When a discharge measurement is above qthresh, the algorthim decides whether it belongs to a 
+"new" event by looking backwards at the last measurement above qthresh. If the difference in time 
+is greater than ieHr, then a new event begins. The start and end times of each event, 
+however, are adjusted to the previous or next timestamp, respectively, to account for the "tails" of
+the event. The consequence of adjusting the start and end times, however, is that depending on the frequency 
+of discharge observations, two observations above qthresh that are greater than ieHr apart (and therefore in seperate events)
+can have start and end times that are closer together than ieHr. If ieHr_check = TRUE (default), the algorithm makes a
+final pass through the events dataset and checks for any events that are closer in time than ieHr. If so, 
+it will combine those events. If ieHr_check = FALSE, the algorithm will leave the events as-is, and depending 
+on discharge measurement frequency and ieHr, you may see events that are closer together than ieHr. In most use-cases, 
+ieHr_check = TRUE is appropriate. However, if discharge measurements are infrequent, and the adjustment to the start 
+and end times are significant, the user may not want the secondary filter on the events.
 }
