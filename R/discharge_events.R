@@ -131,6 +131,7 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
                 EndDate = max(EndDate)) %>%
       select(-event_check)
   }
+  out <- as.data.frame(out)
   return(out)
 }
   
