@@ -24,3 +24,4 @@ Depends:
 LazyLoad: yes
 LazyData: yes
 RoxygenNote: 6.0.1
+Suggests: testthat
