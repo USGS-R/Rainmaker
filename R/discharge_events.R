@@ -92,10 +92,6 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
   
   start.indices <- which(df_input[[time]] %in% start.dates$start_date)
   start.indices <- start.indices -1
-  
-  start.dates.adjusted <- filter(df_input, row_number() %in% start.indices) %>%
-    select(!!time_quo)
-  
 
   # find "punch" from original data that is after last event timestamp
   end.dates <- group_by(df, event) %>%
@@ -104,8 +100,26 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
   end.indices <- which(df_input[[time]] %in% end.dates$end_date)
   end.indices <- end.indices +1
   
-  end.dates.adjusted <- filter(df_input, row_number() %in% end.indices) %>%
-    select(!!time_quo)
+  # throw warning if either start or end index are outside of data frame
+  if (any(end.indices > nrow(df_input))) {
+    warning("Discharge record ends mid-storm. Cannot calculate end of 
+         storm as end + 1 time step. Last storm end time not calculated.")
+  }
+  
+  if (any(start.indices < 1)) {
+    warning("Discharge record starts mid-storm. Cannot calculate start of 
+         storm as start - 1 time step. First storm start time not calculated.")
+  }
+  
+  end.indices <- ifelse(end.indices > nrow(df_input), NA, end.indices)
+  start.indices <- ifelse(start.indices < 1, NA, start.indices)
+  
+  start.dates.adjusted <- df_input[start.indices, ]
+  start.dates.adjusted <- select(start.dates.adjusted, !!time_quo)
+ 
+  end.dates.adjusted <- df_input[end.indices, ]
+  end.dates.adjusted <- select(end.dates.adjusted, !!time_quo)
+  
   
   out <- data.frame(stormnum = start.dates$event,
                        StartDate = start.dates.adjusted[[time]],
@@ -126,10 +140,13 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
     }
     
     out <- group_by(out, event_check) %>%
-      summarize(stormnum = first(event_check),
-                StartDate = min(StartDate), 
+      summarize(StartDate = min(StartDate), 
                 EndDate = max(EndDate)) %>%
       select(-event_check)
+    
+    out$stormnum <- 1:nrow(out)
+    
+    out <- select(out, stormnum, StartDate, EndDate)
   }
   out <- as.data.frame(out)
   return(out)
