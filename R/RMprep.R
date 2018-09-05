@@ -84,10 +84,16 @@ RMprep <- function(df,
                      df[,dates.in[1]]," ",
                      hour,":",minute,sep="")
     }
-    if(tz=="") pdate <-  as.POSIXct(dates,format=Date.style[date.type])
-    else pdate <-  as.POSIXct(dates,format=Date.style[date.type],tz=tz)
-    df$pdate <- pdate
-    names(df)[ncol(df)] <- dates.out
+    if(tz=="") {
+      warning("No time zone specified. Function will use system time zone (e.g., sys.timezone()).")
+      pdate <-  as.POSIXct(dates,format=Date.style[date.type])
+    } else {
+      pdate <-  as.POSIXct(dates,format=Date.style[date.type],tz=tz)
+    }
+    if (any(is.na(pdate))) {
+      warning(paste0("NA values present in column ", date.out, '. Please check whether input data contain NA values and/or that the proper time zone was specified.'))
+    }
+    df[date.out] <- pdate
   }
   
   # Change column headers as specified
