@@ -91,7 +91,7 @@ RMprep <- function(df,
       pdate <-  as.POSIXct(dates,format=Date.style[date.type],tz=tz)
     }
     if (any(is.na(pdate))) {
-      warning(paste0("NA values present in column ", date.out, '. Please check whether input data contains NA values and that the proper time zone was specified.'))
+      warning(paste0("NA values present in column ", date.out, '. Please check whether input data contain NA values and/or that the proper time zone was specified.'))
     }
     df[date.out] <- pdate
   }
