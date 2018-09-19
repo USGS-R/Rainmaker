@@ -5,8 +5,8 @@
 \title{RMintensity}
 \usage{
 RMintensity(df, date = "r.date", rain = "rain", df.events,
-  sdate = "StartDate", edate = "EndDate", depth = "depth", xmin = c(60,
-  180, 360))
+  sdate = "StartDate", edate = "EndDate", depth = "depth",
+  xmin = c(60, 180, 360))
 }
 \arguments{
 \item{df}{dataframe}

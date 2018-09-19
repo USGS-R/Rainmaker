@@ -4,8 +4,8 @@
 \alias{RMevents_sample}
 \title{RMevents_sample}
 \usage{
-RMevents_sample(df, ieHr = 6, rain = "rain", time = "pdate", dfsamples,
-  bdate = "bpdate", edate = "epdate")
+RMevents_sample(df, ieHr = 6, rain = "rain", time = "pdate",
+  dfsamples, bdate = "bpdate", edate = "epdate")
 }
 \arguments{
 \item{df}{dataframe with rainfall}

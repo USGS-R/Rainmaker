@@ -4,7 +4,8 @@
 \alias{RMevents}
 \title{RMevents}
 \usage{
-RMevents(df, ieHr = 6, rainthresh = 5.1, rain = "rain", time = "pdate")
+RMevents(df, ieHr = 6, rainthresh = 5.1, rain = "rain",
+  time = "pdate")
 }
 \arguments{
 \item{df}{dataframe with rainfall}

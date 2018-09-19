@@ -4,8 +4,9 @@
 \alias{RMarf}
 \title{RMarf}
 \usage{
-RMarf(df, date = "date", rain = "rain", df.events, sdate = "StartDate",
-  days = c(0.5, 1, 2, 3, 5, 10, 15, 20), varnameout = "ARF")
+RMarf(df, date = "date", rain = "rain", df.events,
+  sdate = "StartDate", days = c(0.5, 1, 2, 3, 5, 10, 15, 20),
+  varnameout = "ARF")
 }
 \arguments{
 \item{df}{dataframe Unit values rain file}

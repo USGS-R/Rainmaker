@@ -15,6 +15,7 @@
 #' @param bdate character column name in dfsamples for the beginning of the sampling period
 #' @param edate character column name in dfsamples for the ending of the sampling period
 #' @return list of storms and storms2
+#' @importFrom lubridate tz
 #' @export
 #' @examples
 #' RDB <- CedarRRain
@@ -48,6 +49,8 @@ RMevents_sample <- function(df,
   startRainDates <- numeric()
   endRainDates <- numeric()
   tipsbystorm <- data.frame()
+  
+  rain_timezone <- lubridate::tz(df[,time])
  
   for (i in 1:nrow(dfsamples)){
     beginRow <- max(which(df[,time]<dfsamples[i,bdate])+1)
@@ -109,8 +112,8 @@ RMevents_sample <- function(df,
       }
       tipsbystorm <- sub_tips
     } else {
-      startRainDates <- as.POSIXct(c(startRainDates,BD), origin = "1970-01-01")
-      endRainDates <- as.POSIXct(c(endRainDates,ED), origin = "1970-01-01")
+      startRainDates <- as.POSIXct(c(startRainDates,BD), origin = "1970-01-01", tz = rain_timezone)
+      endRainDates <- as.POSIXct(c(endRainDates,ED), origin = "1970-01-01", tz = rain_timezone)
       if (nrow(sub_tips) > 0) {
         event <- event + 1
       } else {
