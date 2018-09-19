@@ -4,7 +4,8 @@
 \alias{RMerosivity}
 \title{RMerosivity}
 \usage{
-RMerosivity(df, ieHr, method, rain = "rain", StormSummary = StormSummary)
+RMerosivity(df, ieHr, method, rain = "rain",
+  StormSummary = StormSummary)
 }
 \arguments{
 \item{df}{dataframe with instantaneous rainfall and events calculated. This is the 'tipsbystorm' 

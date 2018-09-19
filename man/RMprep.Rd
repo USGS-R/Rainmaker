@@ -5,7 +5,8 @@
 \title{RMprep function}
 \usage{
 RMprep(df, prep.type = 1, date.type = 1, dates.in = "default",
-  dates.out = "pdate", cnames.in = "", cnames.new = "rain", tz = "")
+  dates.out = "pdate", cnames.in = "", cnames.new = "rain",
+  tz = "")
 }
 \arguments{
 \item{df}{dataframe}
