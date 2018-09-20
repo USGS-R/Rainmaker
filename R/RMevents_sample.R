@@ -112,8 +112,12 @@ RMevents_sample <- function(df,
       }
       tipsbystorm <- sub_tips
     } else {
-      startRainDates <- as.POSIXct(c(startRainDates,BD), origin = "1970-01-01", tz = rain_timezone)
-      endRainDates <- as.POSIXct(c(endRainDates,ED), origin = "1970-01-01", tz = rain_timezone)
+      #startRainDates <- as.POSIXct(c(startRainDates,BD), origin = "1970-01-01", tz = rain_timezone)
+      #endRainDates <- as.POSIXct(c(endRainDates,ED), origin = "1970-01-01", tz = rain_timezone)
+      startRainDates <- c(startRainDates,BD)
+      endRainDates <- c(endRainDates,ED)
+      
+      
       if (nrow(sub_tips) > 0) {
         event <- event + 1
       } else {
@@ -127,8 +131,8 @@ RMevents_sample <- function(df,
     }
   }
   
-  dfsamples$StartDate <- startRainDates
-  dfsamples$EndDate <- endRainDates
+  dfsamples$StartDate <- as.POSIXct(startRainDates, origin = '1970-01-01', tz = rain_timezone)
+  dfsamples$EndDate <- as.POSIXct(endRainDates, origin = '1970-01-01', tz = rain_timezone)
   dfsamples$rain <- rainDepth
   dfsamples$stormnum <- 1:nrow(dfsamples)
   
