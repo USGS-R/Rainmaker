@@ -39,8 +39,8 @@ Installation of Rainmaker
 `Rainmaker` is only available on Github. The code below shows how to install the package `devtools`, and then use `devtools` to install `Rainmaker` directly from Github. You do not need a Github account to install a package.
 
 ``` r
-install.packages("devtools")
-devtools::install_github("USGS-R/Rainmaker")
+install.packages("remotes")
+remotes::install_github("USGS-R/Rainmaker")
 library(Rainmaker)
 ```
 
