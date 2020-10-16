@@ -4,10 +4,24 @@
 \alias{RMevents.plotQ}
 \title{RMevents.plotQ}
 \usage{
-RMevents.plotQ(df, dfQ, date = "pdate", Qdate = "pdate",
-  rain = "rain", Q = "Q", df.events, sdate = "StartDate",
-  edate = "EndDate", erain = "depth", plot.buffer = 3, logy = "",
-  site.name = "", SampleInfo, sampbdate = "", sampedate = "")
+RMevents.plotQ(
+  df,
+  dfQ,
+  date = "pdate",
+  Qdate = "pdate",
+  rain = "rain",
+  Q = "Q",
+  df.events,
+  sdate = "StartDate",
+  edate = "EndDate",
+  erain = "depth",
+  plot.buffer = 3,
+  logy = "",
+  site.name = "",
+  SampleInfo,
+  sampbdate = "",
+  sampedate = ""
+)
 }
 \arguments{
 \item{df}{dataframe with unit value rainfall data}

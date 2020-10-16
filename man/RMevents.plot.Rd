@@ -4,9 +4,17 @@
 \alias{RMevents.plot}
 \title{RMevents.plot}
 \usage{
-RMevents.plot(df, date = "pdate", rain = "rain", df.events,
-  sdate = "StartDate", edate = "EndDate", depth = "depth",
-  plot.buffer = 3, site.name = "")
+RMevents.plot(
+  df,
+  date = "pdate",
+  rain = "rain",
+  df.events,
+  sdate = "StartDate",
+  edate = "EndDate",
+  depth = "depth",
+  plot.buffer = 3,
+  site.name = ""
+)
 }
 \arguments{
 \item{df}{dataframe with unit value rainfall data}

@@ -4,8 +4,14 @@
 \alias{discharge_events}
 \title{Calculate events from discharge record}
 \usage{
-discharge_events(df, ieHr = 6, qthresh, discharge = "Value",
-  time = "pdate", ieHr_check = TRUE)
+discharge_events(
+  df,
+  ieHr = 6,
+  qthresh,
+  discharge = "Value",
+  time = "pdate",
+  ieHr_check = TRUE
+)
 }
 \arguments{
 \item{df}{dataframe that contains discharge and timestamps}
