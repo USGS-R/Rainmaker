@@ -15,7 +15,6 @@
 #' @param bdate character column name in dfsamples for the beginning of the sampling period
 #' @param edate character column name in dfsamples for the ending of the sampling period
 #' @return list of storms and storms2
-#' @importFrom lubridate tz
 #' @export
 #' @examples
 #' RDB <- CedarRRain
@@ -35,6 +34,9 @@ RMevents_sample <- function(dfrain,
                             dfsamples,
                             bdate="bpdate",
                             edate="epdate"){
+  
+  timediff_min <- event <- ".dplyr"
+  
   # Filter rain data (rain > 0) and calculate time differences
   df <- dfrain %>%
     filter(!!sym(rain) > 0 | row_number() == 1) %>%
@@ -45,9 +47,9 @@ RMevents_sample <- function(dfrain,
            across(contains("timediff"), as.numeric)) 
   
   # State variables for filtering results
-  rain_timezone <- lubridate::tz(df[,time])
-  rain_first <- min(dfrain[,time], na.rm = TRUE)
-  rain_last <- max(dfrain[,time], na.rm = TRUE)
+  rain_timezone <- attributes(df[, time])$tzone
+  rain_first <- min(dfrain[, time], na.rm = TRUE)
+  rain_last <- max(dfrain[, time], na.rm = TRUE)
   ieSec <- ieHr * 3600 # compute interevent period in seconds to use with POSIX
   
   # Objects to fill in per row
@@ -68,11 +70,11 @@ RMevents_sample <- function(dfrain,
     # Identify first rain row after the start time and
     # the last rain row before the end time 
     beginRow <- min(which(df[, time] > dfsamples[i, bdate]))
-    endRow <- max(which(df[,time] < dfsamples[i,edate]))
+    endRow <- max(which(df[, time] < dfsamples[i,edate]))
     
     # rain end time (ED). Note that ED can be before the sample time
     # if rain == 0 during the flow period
-    ED <- df[endRow,time]
+    ED <- df[endRow, time]
     
     # rain record preceding sample time 
     subdf <- df[c(1:(beginRow-1)),]
