@@ -4,11 +4,18 @@
 \alias{RMevents_sample}
 \title{RMevents_sample}
 \usage{
-RMevents_sample(df, ieHr = 6, rain = "rain", time = "pdate",
-  dfsamples, bdate = "bpdate", edate = "epdate")
+RMevents_sample(
+  dfrain,
+  ieHr = 6,
+  rain = "rain",
+  time = "pdate",
+  dfsamples,
+  bdate = "bpdate",
+  edate = "epdate"
+)
 }
 \arguments{
-\item{df}{dataframe with rainfall}
+\item{dfrain}{dataframe with rainfall}
 
 \item{ieHr}{numeric Interevent period in hours, defaults to 6,}
 
@@ -38,7 +45,7 @@ cedarSamples <- cedarSamples
 names(RDB)[2] <- "UVRain"
 RDB2 <- RMprep(RDB,prep.type=1,date.type=1,
                dates.in="CST.Time",tz="CST6CDT")
-eventListSamples <- RMeventsSamples(df=RDB2,ieHr=6,
+eventListSamples <- RMevents_sample(df=RDB2,ieHr=6,
                                     rain="UVRain",
                                     time="pdate",
                                     dfsamples=cedarSamples,
