@@ -4,18 +4,7 @@
 \alias{RMevents}
 \title{RMevents}
 \usage{
-<<<<<<< HEAD
-RMevents(
-  df,
-  ieHr = 6,
-  rainthresh = 5.1,
-  timeInterval = 1,
-  rain = "rain",
-  time = "pdate"
-)
-=======
 RMevents(df, ieHr = 6, rainthresh = 5.1, rain = "rain", time = "pdate")
->>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149
 }
 \arguments{
 \item{df}{dataframe with rainfall}
@@ -37,7 +26,9 @@ the minimum time difference between observations (timeInterval)
 Compute rainfall event variables based on time series of rain data with only one rain
 gage or one mean radar rain column.
 }
-<<<<<<< HEAD
+\details{
+Rainfall event determination
+}
 \examples{
 RDB <- CedarRRain
 RDB2 <- RMprep(RDB,
@@ -48,11 +39,6 @@ RDB2 <- RMprep(RDB,
 event.list <- RMevents(df = RDB2,
                        ieHr = 6,
                        rainthresh = 0.2,
-                       timeInterval = 60,
                        rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
-=======
-\details{
-Rainfall event determination
->>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149
 }

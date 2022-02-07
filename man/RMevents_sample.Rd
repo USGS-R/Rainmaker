@@ -4,13 +4,8 @@
 \alias{RMevents_sample}
 \title{RMevents_sample}
 \usage{
-<<<<<<< HEAD:man/RMeventsSamples.Rd
-RMeventsSamples(
-  df,
-=======
 RMevents_sample(
   dfrain,
->>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149:man/RMevents_sample.Rd
   ieHr = 6,
   rain = "rain",
   time = "pdate",

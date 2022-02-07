@@ -26,7 +26,6 @@
 #' event.list <- RMevents(df = RDB2,
 #'                        ieHr = 6,
 #'                        rainthresh = 0.2,
-#'                        timeInterval = 60,
 #'                        rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
 RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){

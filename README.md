@@ -1,54 +1,68 @@
 =========
 
-Rainmaker
-=========
+# Rainmaker
 
-Package Status
---------------
+## Package Status
 
-| Linux                                                                                                         | Windows                                                                                                                                           | Test Coverage                                                                                                                                                | USGS Status                                                                                                     |
-|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [![travis](https://travis-ci.org/USGS-R/Rainmaker.svg?branch=master)](https://travis-ci.org/USGS-R/Rainmaker) | [![Build status](https://ci.appveyor.com/api/projects/status/i2hr35abwxx85vgs?svg=true)](https://ci.appveyor.com/project/ldecicco-USGS/Rainmaker) | [![Coverage Status](https://coveralls.io/repos/github/USGS-R/Rainmaker/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/Rainmaker?branch=master) | [![status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research) |
+[![R build
+status](https://github.com/USGS-R/Rainmaker/workflows/R-CMD-check/badge.svg)](https://github.com/USGS-R/Rainmaker/actions)
+[![codecov](https://codecov.io/gh/USGS-R/Rainmaker/branch/main/graph/badge.svg)](https://codecov.io/gh/USGS-R/Rainmaker)
+[![status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research)\|
 
 ### Reporting bugs
 
-Please consider reporting bugs and asking questions on the Issues page: <https://github.com/USGS-R/Rainmaker/issues>
+Please consider reporting bugs and asking questions on the Issues page:
+<https://github.com/USGS-R/Rainmaker/issues>
 
 ### Code of Conduct
 
-We want to encourage a warm, welcoming, and safe environment for contributing to this project. See the [code of conduct](https://github.com/USGS-R/Rainmaker/blob/master/CONDUCT.md) for more information.
+We want to encourage a warm, welcoming, and safe environment for
+contributing to this project. See the [code of
+conduct](https://github.com/USGS-R/Rainmaker/blob/master/CONDUCT.md) for
+more information.
 
-Installation of R and RStudio
------------------------------
+## Installation of R and RStudio
 
 This section should only need to be done once per computer.
 
 The following link walks you through an installation of R and RStudio:
 
-[Installation Instructions](https://owi.usgs.gov/R/training-curriculum/intro-curriculum/Before/)
+[Installation
+Instructions](https://owi.usgs.gov/R/training-curriculum/intro-curriculum/Before/)
 
 Useful links:
 
 -   [Download R Windows](https://cran.r-project.org/bin/windows/base/)
 -   [Download R Mac](https://cran.r-project.org/bin/macosx/)
--   [Download RStudio](https://www.rstudio.com/products/rstudio/download/)
+-   [Download
+    RStudio](https://www.rstudio.com/products/rstudio/download/)
 
-Installation of Rainmaker
--------------------------
+## Installation of Rainmaker
 
-`Rainmaker` is only available on Github. The code below shows how to install the package `devtools`, and then use `devtools` to install `Rainmaker` directly from Github. You do not need a Github account to install a package.
+`Rainmaker` is only available on Github. The code below shows how to
+install the package `devtools`, and then use `devtools` to install
+`Rainmaker` directly from Github. You do not need a Github account to
+install a package.
 
 ``` r
-install.packages("remotes")
-remotes::install_github("USGS-R/Rainmaker")
+install.packages("devtools")
+devtools::install_github("USGS-R/Rainmaker")
 library(Rainmaker)
 ```
 
-Disclaimer
-----------
+## Disclaimer
 
-This software is in the public domain because it contains materials that originally came from the United States Geological Survey, an agency of the United States Department of Interior. For more information, see the official USGS copyright policy at <http://www.usgs.gov/visual-id/credit_usgs.html#copyright>
+This software is in the public domain because it contains materials that
+originally came from the United States Geological Survey, an agency of
+the United States Department of Interior. For more information, see the
+official USGS copyright policy at
+<http://www.usgs.gov/visual-id/credit_usgs.html#copyright>
 
-Although this software program has been used by the U.S. Geological Survey (USGS), no warranty, expressed or implied, is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty, and no responsibility is assumed by the USGS in connection therewith.
+Although this software program has been used by the U.S. Geological
+Survey (USGS), no warranty, expressed or implied, is made by the USGS or
+the U.S. Government as to the accuracy and functioning of the program
+and related program material nor shall the fact of distribution
+constitute any such warranty, and no responsibility is assumed by the
+USGS in connection therewith.
 
-This software is provided "AS IS".
+This software is provided “AS IS”.

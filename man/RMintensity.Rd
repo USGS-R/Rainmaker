@@ -4,11 +4,7 @@
 \alias{RMintensity}
 \title{RMintensity}
 \usage{
-<<<<<<< HEAD:man/RMIntense.Rd
-RMIntense(
-=======
 RMintensity(
->>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149:man/RMintensity.Rd
   df,
   date = "r.date",
   rain = "rain",
@@ -34,28 +30,30 @@ RMintensity(
 
 \item{depth}{string rain depth in event file, defaults to "depth",}
 
-\item{xmin}{vector vector of values representing X-minute max rainfall requested}
+\item{xmin}{vector vector of values representing X-minute max rainfall 
+requested}
 }
 \value{
 df.events dataframe, X-hour maximum rainfall intensities
 }
 \description{
-Function to compute maximum x-minute rainfall intensities in units of depth/hr
+Function to compute maximum x-minute rainfall intensities in units of 
+depth/hr
 }
 \examples{
 RDB <- CedarRRain
-RDB2 <- RMprep(RDB, 
-               prep.type = 1,
-               date.type = 1,
-               dates.in = "CST.Time",
-               tz = "CST6CDT")
+RDB2 <- RMprep(RDB,
+               prep.type=1,
+               date.type=1,
+               dates.in="CST.Time",tz="CST6CDT")
 RDB3 <- subset(RDB2,
-        upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2. > -1)
-event.list <- RMevents(df = RDB3, ieHr = 6, rainthresh = 0.2,
+upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
+event.list <- RMevents(df=RDB3,
+                       ieHr=6,
+                       rainthresh=0.2,
 rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
 intensities <- RMIntense(RDB3,date="pdate",
- rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
- events.0.2,sdate="StartDate",edate="EndDate",
- depth="rain",xmin=c(5,15,30))
+rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
+events.0.2,sdate="StartDate",edate="EndDate",depth="rain",xmin=c(5,15,30))
 }

@@ -1,6 +1,7 @@
 #' RMevents.plotQ
 #'
-#' Function to graph rainfall and flow for a given x-day window around specified event periods
+#' Function to graph rainfall and flow for a given x-day window around
+#'  specified event periods
 #'
 #' @param df dataframe with unit value rainfall data
 #' @param dfQ dataframe with unit value Q data
@@ -12,15 +13,21 @@
 #' @param sdate string Start date column in df.events rain file as POSIXct
 #' @param edate string End date column in df.events as POSIXct
 #' @param erain string Event rainfall depth column in df.events
-#' @param plot.buffer numeric Used to define plotting window in days. Graphs will include
+#' @param plot.buffer numeric Used to define plotting window in days. Graphs
+#'  will include
 #     data Time period preceding beginning of event for including in the graphs
-#' @param logy string "y" if log y-axis for Q or "" if linear axis. Will default to "".
+#' @param logy string "y" if log y-axis for Q or "" if linear axis. Will default
+#'  to "".
 #                                if not specific or if minimum Q <= 0.
 #' @param site.name site name as data type character
-#' @param SampleInfo if TRUE then sample start and end dates/times are plotted on the hydrograph;
-#' if FALSE then sample start and end dates/times are not plotted on the hydrograph.
-#' @param sampbdate character column name in df.events for the beginning of the sampling period
-#' @param sampedate character column name in df.events for the ending of the sampling period
+#' @param SampleInfo if TRUE then sample start and end dates/times are plotted 
+#' on the hydrograph;
+#' if FALSE then sample start and end dates/times are not plotted on the 
+#' hydrograph.
+#' @param sampbdate character column name in df.events for the beginning of the
+#'  sampling period
+#' @param sampedate character column name in df.events for the ending of the 
+#' sampling period
 #' @export 
 #' @return plots of rainfall events and discharge
 #' @examples
@@ -29,13 +36,17 @@
 #' dfQ <- cedarq
 #' dfQ <- RMprep(dfQ,prep.type=1,date.type=3,tz="CST6CDT")
 #' RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-#' RDB3 <- subset(RDB2,upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
-#' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
+#' RDB3 <- subset(RDB2,
+#' upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
+#' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,
+#' rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
 #' site.name <- "Example Site"
 #' SampleInfo <- FALSE
 #' pdf(paste(site.name,"_events.pdf",sep=""))
-#' RMevents.plotQ(RDB3,dfQ,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,erain="rain",
+#' RMevents.plotQ(RDB3,dfQ,
+#' rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
+#' df.events=events.0.2,erain="rain",
 #' site.name=site.name,SampleInfo=SampleInfo)
 #' shell.exec(paste(site.name,"_events.pdf",sep=""))
 #' dev.off()
@@ -43,19 +54,31 @@
 #' RDB <- CedarRRain
 #' cedarSamples <- cedarSamples
 #' names(RDB)[2] <- "UVRain"
-#' RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-#' eventListSamples <- RMevents_sample(df=RDB2,ieHr=6,rain="UVRain",time="pdate",dfsamples=cedarSamples,bdate="pSstart",edate="pSend")
+#' RDB2 <- RMprep(RDB,
+#'                prep.type=1,
+#'                date.type=1,
+#'                dates.in="CST.Time",
+#'                tz="CST6CDT")
+#' eventListSamples <- RMevents_sample(df=RDB2,
+#'                                     ieHr=6,
+#'                                     rain="UVRain",
+#'                                     time="pdate",
+#'                                     dfsamples=cedarSamples,
+#'                                     bdate="pSstart",edate="pSend")
 #' dfQ <- cedarq
 #' dfQ <- RMprep(dfQ,prep.type=1,date.type=3,tz="CST6CDT")
 #' site.name <- "Example Site"
 #' SampleInfo <- TRUE
 #' sampbdate <- "pSstart"
 #' sampedate <- "pSend"
-#' pdf(paste(site.name,"_events.pdf",sep=""))
-#' RMeventsSamples.plotQ(RDB2,dfQ,rain="UVRain",df.events=eventListSamples,sdate="Braindate",edate="Eraindate",
-#' erain="depth",logy="",site.name=site.name,sampbdate="pSstart",sampedate="pSend")
-#' shell.exec(paste(site.name,"_events.pdf",sep=""))
-#' dev.off()
+#' RMeventsSamples.plotQ(RDB2,
+#'                       dfQ,
+#'                       rain="UVRain",
+#'                       df.events=eventListSamples,
+#'                       sdate="Braindate",
+#'                       edate="Eraindate",
+#'                       erain="depth",logy="",site.name=site.name,
+#'                       sampbdate="pSstart",sampedate="pSend")
 RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q",
                                   df.events,sdate="StartDate",edate="EndDate", erain="depth",
                                   plot.buffer=3,logy="",site.name="",SampleInfo, sampbdate='', sampedate='') {

@@ -2,12 +2,7 @@
 # Test script to compare x-minute interval rain data to hourly interval rain data
 # Tested on ./data/05408480.csv and ./data/rain.test.csv
 
-# Import dependencies
-library(dplyr)
-library(lubridate)
 
-# Source RMevents.R
-source(here::here("R", "RMevents.R"))
 
 ################################################
 ########### Testing for 05408480.csv ###########
@@ -15,15 +10,16 @@ source(here::here("R", "RMevents.R"))
 
 # Import test script
 # This data contains rain totals every 15 minutes
-quarterly <- read.csv("C:/R/Rainmaker/data/05408480.csv") %>%
-  dplyr::mutate(dateTime = as.POSIXct(dateTime, 
-                                      format = "%Y-%m-%d %H:%M:%S",
-                                      tz = tz_cd[1]))
+quarterly <- read.csv(system.file("extdata/05408480.csv", package = "Rainmaker"))
 
+quarterly$dateTime = as.POSIXct(quarterly$dateTime, 
+                                      format = "%Y-%m-%d %H:%M:%S",
+                                      tz = "America/Chicago")
+
+library(dplyr)
 # Format dateTime into POSIXct
 # Summarise quarterly rain data into hourly rain data
-hourly <- quarterly %>%
-  dplyr::mutate(hour = lubridate::floor_date(dateTime, unit = "hour")) %>%
+hourly <- dplyr::mutate(quarterly, hour = lubridate::floor_date(dateTime, unit = "hour")) %>%
   dplyr::group_by(hour) %>%
   dplyr::summarise(rain_hourly = sum(rain))
 
@@ -41,22 +37,10 @@ hourly_result <- RMevents(hourly,
                           rain = "rain_hourly",
                           time = "hour")
 
-# Compare results
-hourly_result[[2]]$rain-quarterly_result[[2]]$rain
 
-
-################################################
-########## Testing for rain.test.csv ##########
-################################################
-
-# Clear environment and run test on different dataset
-rm(list = ls())
-
-# Source RMevents.R
-source(here::here("R", "RMevents.R"))
 
 # Import test script
-rain.test <- read.csv("C:/R/Rainmaker/data/rain.test.csv") %>%
+rain.test <- read.csv(system.file("extdata/rain.test.csv", package = "Rainmaker")) %>%
   dplyr::mutate(date = as.POSIXct(date,
                                   format = "%m/%d/%Y %H:%M")) %>%
   dplyr::arrange(date)
@@ -83,6 +67,6 @@ hourly_result <- RMevents(hourly,
                           time = "hour")
 
 # Compare results
-hourly_result[[2]]$rain - rain.test_result[[2]]$rain
+# hourly_result[[2]]$rain - rain.test_result[[2]]$rain
 
 

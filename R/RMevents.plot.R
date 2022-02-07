@@ -1,6 +1,7 @@
 #' RMevents.plot
 #'
-#' Function to graph rainfall for a given x-day window around specified event periods
+#' Function to graph rainfall for a given x-day window around specified event
+#'  periods
 #'
 #' @param df dataframe with unit value rainfall data
 #' @param date string Date column in df as POSIX
@@ -9,7 +10,8 @@
 #' @param sdate string Start date column in df.events rain file as POSIX
 #' @param edate string End date column in df.events rain file as POSIX
 #' @param depth string column in df.events with event rain depth
-#' @param plot.buffer numeric Used to define plotting window in days. Graphs will include
+#' @param plot.buffer numeric Used to define plotting window in days. 
+#' Graphs will include
 #'    data Time period preceding beginning of event for including in the graphs
 #' @param site.name string
 #' @export 
@@ -18,11 +20,17 @@
 #' RDB2 <- RMprep(RDB, prep.type = 1, date.type = 1,
 #'                dates.in = "CST.Time", tz = "CST6CDT")
 #' RDB3 <- subset(RDB2,
-#'           upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2. > -1)
-#' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
+#'  upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2. > -1)
+#' event.list <- RMevents(df=RDB3,
+#'                        ieHr=6,
+#'                        rainthresh=0.2,
+#' rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
 #' # pdf("events.pdf")
-#' RMevents.plot(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,sdate="StartDate","EndDate",depth= "rain",plot.buffer=2,site.name="Example Site")
+#' RMevents.plot(RDB3,date="pdate",
+#' rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
+#' df.events=events.0.2,sdate="StartDate","EndDate",depth= "rain",plot.buffer=2,
+#' site.name="Example Site")
 #' # dev.off()
 RMevents.plot <- function(df,date="pdate",rain = "rain",
                           df.events,sdate="StartDate",edate="EndDate",
