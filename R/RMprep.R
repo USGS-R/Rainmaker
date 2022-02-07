@@ -18,9 +18,9 @@
 #' date.type=4: four column names > c("YEAR","MONTH","DAY","MINUTE"), 
 #' date.type=5: two column names -> c("Date","Time"), 
 #' If no value is given, the defaults given above are used. Enter value as c("name1","name2",...)
-#' @param dates.out string
-#' @param cnames.in string
-#' @param cnames.new string
+#' @param dates.out string Column name of output dates, defaults to 'pdate' which is used elsewhere in Rainmaker.
+#' @param cnames.in string Column names of the input data which should be changed.
+#' @param cnames.new string New column names for the columns specified in cnames.in. 
 #' @param tz string time zone, CST6CDT for central time. For other times use values in the TZ* column here:
 #' \url{http://en.wikipedia.org/wiki/List_of_zoneinfo_time_zones}
 #' @return df dataframe
@@ -84,10 +84,16 @@ RMprep <- function(df,
                      df[,dates.in[1]]," ",
                      hour,":",minute,sep="")
     }
-    if(tz=="") pdate <-  as.POSIXct(dates,format=Date.style[date.type])
-    else pdate <-  as.POSIXct(dates,format=Date.style[date.type],tz=tz)
-    df$pdate <- pdate
-    names(df)[ncol(df)] <- dates.out
+    if(tz=="") {
+      warning("No time zone specified. Function will use system time zone (e.g., sys.timezone()).")
+      pdate <-  as.POSIXct(dates,format=Date.style[date.type])
+    } else {
+      pdate <-  as.POSIXct(dates,format=Date.style[date.type],tz=tz)
+    }
+    if (any(is.na(pdate))) {
+      warning(paste0("NA values present in column ", dates.out, '. Please check whether input data contain NA values and/or that the proper time zone was specified.'))
+    }
+    df[dates.out] <- pdate
   }
   
   # Change column headers as specified

@@ -84,7 +84,7 @@ RDB <- CedarRRain
 cedarSamples <- cedarSamples
 names(RDB)[2] <- "UVRain"
 RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-eventListSamples <- RMeventsSamples(df=RDB2,ieHr=6,rain="UVRain",time="pdate",dfsamples=cedarSamples,bdate="pSstart",edate="pSend")
+eventListSamples <- RMevents_sample(df=RDB2,ieHr=6,rain="UVRain",time="pdate",dfsamples=cedarSamples,bdate="pSstart",edate="pSend")
 dfQ <- cedarq
 dfQ <- RMprep(dfQ,prep.type=1,date.type=3,tz="CST6CDT")
 site.name <- "Example Site"

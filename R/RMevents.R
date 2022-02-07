@@ -1,3 +1,5 @@
+#' RMevents
+#' 
 #' Rainfall event determination
 #' 
 #' @description
@@ -7,10 +9,12 @@
 #' @param df dataframe with rainfall
 #' @param ieHr numeric Interevent period in hours, defaults to 6, 
 #' @param rainthresh numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")
-#' @param timeInterval numeric Minimum time interval between measurements in seconds, default is 60 seconds
 #' @param rain string Column name of rainfall unit values, defaults to "rain"
 #' @param time string column with as.POSIXctdate, defaults to "pdate"
-#' @return list of storms and storms2
+#' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
+#' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
+#' the minimum time difference between observations (timeInterval)
+#' @importFrom rlang sym
 #' @export
 #' @examples
 #' RDB <- CedarRRain
@@ -25,91 +29,70 @@
 #'                        timeInterval = 60,
 #'                        rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
-RMevents <- function(df,ieHr=6,rainthresh=5.1,timeInterval=1,rain="rain",time="pdate"){
+RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
-  ieSec <- ieHr * 3600 # compute interevent period in seconds to use with POSIX
-  dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
+  if(!time %in% names(df)){
+    stop("Supplied 'time' column name not in df")
+  }
+  
+  if(all(is.na(df[[time]]))){
+    stop("All time values are NA")
+  }
+  
+  #ieMin <- ieHr * 60 # compute interevent period in minutes
+  #dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
+  
+  
+  # make sure data are arranged in order by time
+  df <- df[order(df[,time]), ]
+  
+  # be sure to remove any repeated rows
+  df <- unique(df)
+  
   
   df <- df[df[rain] != 0,]
   df <- df[df[rain] > 0.00001,]
-  stormnum <- 0
+  df["event"] <- NA
+  df[1, "event"] <- 1
   
   dif_time <- diff(df[[time]])
-  which(dif_time > ieSec)
-  for (i in 2:nrow(df)) {
-  #   
-  # }
-     # Initiate variables
-     StartRow <- 1
-     EndRow <- 1
-     StartDryRow <- 1
-     dry <- FALSE
-     stormnum <- 0
-     continue.dry <- FALSE
-     sumrain <- 0
-    
-   #Loop through rain data and define event periods
-    for (i in 2:nrow(df)) {
+  timeInterval <- min(dif_time)
+  df$dif_time[2:nrow(df)] <- dif_time
   
-     # During dry period, look for start of event
-      if(dry) {
+  ie <- ifelse(units(dif_time) == "mins", ieHr * 60, ieHr)
   
-        # Event initiation
-        if(df[i,rain]>0 ) {
-          dry=FALSE
-          StartRow <- i-1
-        }
-      }
-      #Define event period
-      if(!dry) {
-        
-        # Search for end of event period
-        if(df[i,rain]==0) {
-          if(!continue.dry){
-            continue.dry <- TRUE
-            dryduration <- difftime(df[[time]][i],
-                                    df[[time]][StartDryRow],
-                                    units="secs")
-          }
-          
-          # Continue checking for end of event (dry duration >= interevent period)
-          if(continue.dry){                   
-            dryduration <- difftime(df[[time]][i],
-                                    df[[time]][StartDryRow],
-                                    units="secs")
-            if(dryduration >= ieSec) {
-              EndRow <- StartDryRow
-              stormnum <- stormnum + 1
-              
-              # After event period ends, save start and end dates/times and rain depth
-              # Adjust begin time to be one timeInterval before the first rainfall
-              
-              df[StartRow,time] <- df[(StartRow+1),time] - 
-                as.numeric(difftime(df[[time]][(StartRow+1)], dateOrigin,units = 'sec')) %% timeInterval
-              current.storm <- data.frame(stormnum=stormnum,
-                                          StartDate=df[StartRow,time],
-                                          EndDate=df[EndRow,time],
-                                          rain=sumrain)
-              dry <- TRUE
-              if(stormnum>1) storms <- rbind(storms, current.storm)
-              else storms <- current.storm        
-              sumrain <- 0
-              
-            }
-          }
-        }
-        # add current rain to event depth
-        if (df[i,rain]!=0) {
-          sumrain <- sumrain + df[i,rain]
-          EndRow <- i
-          StartDryRow <- EndRow
-          continue.dry <- FALSE
-        }
-      }
+  # loop that assigns each row to an event number based on dif_time
+  for (i in 2:nrow(df)){
+    if (dif_time[[i-1]] >= ie) {
+      df$event[i] <- df$event[i-1] + 1
+    } else {
+      df$event[i] <- df$event[i-1]
     }
   }
-  # Subset based on defined event rain depth threshold        
-  storms2 <- subset(storms,rain>=rainthresh,row.names=FALSE)
   
-  return(list(storms2=storms2,storms=storms))
+  
+  rain.events <- stats::aggregate(x = df[[rain]], 
+                                  by = list(df$event), sum) #find sum of rain in each event
+  
+  # create new variable so can use in dplyr function
+  time_quo <- rlang::sym(time)
+  start.dates <- dplyr::group_by(df, event) %>%
+    dplyr::summarize(start_date = min(!!time_quo, na.rm = TRUE)) #find minimum date for each event
+  
+  start.dates <- start.dates$start_date - timeInterval
+  
+  end.dates <- group_by(df, event) %>%
+    summarize(end_date = max(!!time_quo))
+  
+  end.dates <- end.dates$end_date
+  
+  out <- data.frame(stormnum = rain.events[,1],
+                    StartDate = start.dates,
+                    EndDate = end.dates,
+                    rain = rain.events[,2])
+  out2 <- subset(out, rain >= rainthresh, row.names = FALSE)
+  return(list(storms2 = out2,
+              storms = out,
+              tipsbystorm = df[,c(rain, time, 'dif_time', 'event')], 
+              timeInterval = timeInterval))
 }

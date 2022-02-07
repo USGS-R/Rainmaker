@@ -50,6 +50,6 @@ RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
 RDB3 <- subset(RDB2,upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
 event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
-intensities <- RMIntense(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",events.0.2,sdate="StartDate",edate="EndDate",depth="rain",xmin=c(5,15,30))
+intensities <- RMintensity(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",events.0.2,sdate="StartDate",edate="EndDate",depth="rain",xmin=c(5,15,30))
 ARFrain <- RMarf(df=RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=intensities,sdate="StartDate",days=c(1,3,5),varnameout="ARF")
 }

@@ -2,8 +2,9 @@
 % Please edit documentation in R/RMevents.R
 \name{RMevents}
 \alias{RMevents}
-\title{Rainfall event determination}
+\title{RMevents}
 \usage{
+<<<<<<< HEAD
 RMevents(
   df,
   ieHr = 6,
@@ -12,6 +13,9 @@ RMevents(
   rain = "rain",
   time = "pdate"
 )
+=======
+RMevents(df, ieHr = 6, rainthresh = 5.1, rain = "rain", time = "pdate")
+>>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149
 }
 \arguments{
 \item{df}{dataframe with rainfall}
@@ -20,19 +24,20 @@ RMevents(
 
 \item{rainthresh}{numeric Minimum event depth in units of the rain column, default is given as 5.1 assuming millimeters (0.2")}
 
-\item{timeInterval}{numeric Minimum time interval between measurements in seconds, default is 60 seconds}
-
 \item{rain}{string Column name of rainfall unit values, defaults to "rain"}
 
 \item{time}{string column with as.POSIXctdate, defaults to "pdate"}
 }
 \value{
-list of storms and storms2
+list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
+a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
+the minimum time difference between observations (timeInterval)
 }
 \description{
 Compute rainfall event variables based on time series of rain data with only one rain
 gage or one mean radar rain column.
 }
+<<<<<<< HEAD
 \examples{
 RDB <- CedarRRain
 RDB2 <- RMprep(RDB,
@@ -46,4 +51,8 @@ event.list <- RMevents(df = RDB2,
                        timeInterval = 60,
                        rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
+=======
+\details{
+Rainfall event determination
+>>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149
 }

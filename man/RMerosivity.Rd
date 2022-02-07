@@ -4,6 +4,7 @@
 \alias{RMerosivity}
 \title{RMerosivity}
 \usage{
+<<<<<<< HEAD
 RMerosivity(
   df,
   ieHr,
@@ -12,20 +13,24 @@ RMerosivity(
   rain = "rain",
   StormSummary = StormSummary
 )
+=======
+RMerosivity(df, ieHr, method, rain = "rain", StormSummary = StormSummary)
+>>>>>>> 08a9583932471c7275f1751cc6f0ba9dc67b0149
 }
 \arguments{
-\item{df}{dataframe with instantaneous rainfall, same df used for RMIntense}
+\item{df}{dataframe with instantaneous rainfall and events calculated. This is the 'tipsbystorm' 
+output from RMevents, or the third list component from the output of RMevents. This dataframe 
+must include colums for rain values, dates, 'dif_time' or the time elapsed from one tip (row) to the 
+next, and 'event' which numbers each row or tip by which event to which it belongs 
+(starting at 1).}
 
 \item{ieHr}{time between events in hours}
 
-\item{timeInterval}{the minimum time between rows of data, 
-assumed to be the time it took for precip to accumulate in the collector before the first tip of an event}
+\item{method}{choose which energy equation to use (see below for more details)}
 
-\item{method}{choose which energy equation to use (see below)}
+\item{rain}{string, column name of rainfall unit values, defaults to "rain"}
 
-\item{rain}{string column name of rainfall unit values, defaults to "rain"}
-
-\item{StormSummary}{dataframe output by RMIntense, defaults to "StormSummary"
+\item{StormSummary}{dataframe output by RMIntense
 
 method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
 
