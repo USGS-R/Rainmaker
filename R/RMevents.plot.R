@@ -15,13 +15,15 @@
 #' @export 
 #' @examples
 #' RDB <- CedarRRain
-#' RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-#' RDB3 <- subset(RDB2,upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
+#' RDB2 <- RMprep(RDB, prep.type = 1, date.type = 1,
+#'                dates.in = "CST.Time", tz = "CST6CDT")
+#' RDB3 <- subset(RDB2,
+#'           upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2. > -1)
 #' event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 #' events.0.2 <- event.list$storms2
-#' pdf("events.pdf")
+#' # pdf("events.pdf")
 #' RMevents.plot(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,sdate="StartDate","EndDate",depth= "rain",plot.buffer=2,site.name="Example Site")
-#' dev.off()
+#' # dev.off()
 RMevents.plot <- function(df,date="pdate",rain = "rain",
                           df.events,sdate="StartDate",edate="EndDate",
                           depth="depth",plot.buffer=3,site.name="") {
@@ -54,18 +56,18 @@ RMevents.plot <- function(df,date="pdate",rain = "rain",
     r[2] <- r[2]+24*3600
     rhour <- seq(r[1], r[2], by=24*3600/4)
     rday <- seq(r[1], r[2], by="days")
-    axis.POSIXct(1,subdf[,date],at=rhour,format=" ",tcl=-0.2)
-    axis.POSIXct(1,subdf[,date],at=rday,format=" ",tcl=-0.5)
-    axis.POSIXct(3,subdf[,date],at=rhour,format=" ",tcl=0.2)
-    axis.POSIXct(3,subdf[,date],at=rday,format=" ",tcl=0.5)
-    axis.POSIXct(1,subdf[,date],format = "%m/%d/%y")
-    arrows(as.POSIXct(df.events[i,sdate]),(rmax-0.15),
+    graphics::axis.POSIXct(1,subdf[,date],at=rhour,format=" ",tcl=-0.2)
+    graphics::axis.POSIXct(1,subdf[,date],at=rday,format=" ",tcl=-0.5)
+    graphics::axis.POSIXct(3,subdf[,date],at=rhour,format=" ",tcl=0.2)
+    graphics::axis.POSIXct(3,subdf[,date],at=rday,format=" ",tcl=0.5)
+    graphics::axis.POSIXct(1,subdf[,date],format = "%m/%d/%y")
+    graphics::arrows(as.POSIXct(df.events[i,sdate]),(rmax-0.15),
            as.POSIXct(df.events[i,edate]),(rmax-0.15),
-           length=0.07,angle=20,col=colors()[84],
+           length=0.07,angle=20,col= grDevices::colors()[84],
            code=3)
-    mtext(paste("Event depth =",
+    graphics::mtext(paste("Event depth =",
                 round(df.events[i,depth],2),"mm"),
-          side=3,line=0.1,col=colors()[84])
+          side=3,line=0.1,col= grDevices::colors()[84])
   }
   
 #   dev.off()

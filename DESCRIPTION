@@ -7,7 +7,7 @@ Authors@R: c(
     email = "srcorsi@usgs.gov"),
     person("Rebecca","Carvin", role = c("aut"),
     email = "rbcarvin@usgs.gov"))
-Description: More about what it does (maybe more than one line)
+Description: Rainfall event processing. 
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
     that originally came from the United States Geological Survey, an agency of
@@ -16,6 +16,12 @@ Copyright: This software is in the public domain because it contains materials
     http://www.usgs.gov/visual-id/credit_usgs.html#copyright
 Depends:
     R (>= 3.0)
+Imports:
+    dplyr,
+    utils,
+    graphics,
+    grDevices,
+    stats
 LazyLoad: yes
 LazyData: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.2

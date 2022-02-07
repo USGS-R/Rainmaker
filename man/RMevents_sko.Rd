@@ -4,8 +4,7 @@
 \alias{RMevents_sko}
 \title{Rainfall event determination}
 \usage{
-RMevents_sko(df, ieHr = 6, rainthresh = 5.1, rain = "rain",
-  time = "pdate")
+RMevents_sko(df, ieHr = 6, rainthresh = 5.1, rain = "rain", time = "pdate")
 }
 \arguments{
 \item{df}{dataframe with rainfall}

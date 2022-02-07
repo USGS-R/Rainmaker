@@ -37,7 +37,7 @@ RMerosivity <- function(df, ieHr, timeInterval, method, rain="rain", StormSummar
   #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = df$pdate[1] - 60*60*24)
-  df <- bind_rows(x, df)
+  df <- dplyr::bind_rows(x, df)
   
   #find the time between each row, place that value in a column titled "time_gap"
   df$time_between <- NA
@@ -82,7 +82,7 @@ RMerosivity <- function(df, ieHr, timeInterval, method, rain="rain", StormSummar
   #sum energy for each storm
   StormSummary$energy <- NA  
   for(i in 1:nrow(StormSummary)){
-    storm_i <- filter(df, pdate >= StormSummary$StartDate[i],
+    storm_i <- dplyr::filter(df, pdate >= StormSummary$StartDate[i],
                       pdate <= StormSummary$EndDate[i])
     StormSummary$energy[i] <- sum(storm_i$energy, na.rm = TRUE)
     

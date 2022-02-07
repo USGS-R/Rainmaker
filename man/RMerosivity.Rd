@@ -4,8 +4,14 @@
 \alias{RMerosivity}
 \title{RMerosivity}
 \usage{
-RMerosivity(df, ieHr, timeInterval, method, rain = "rain",
-  StormSummary = StormSummary)
+RMerosivity(
+  df,
+  ieHr,
+  timeInterval,
+  method,
+  rain = "rain",
+  StormSummary = StormSummary
+)
 }
 \arguments{
 \item{df}{dataframe with instantaneous rainfall, same df used for RMIntense}

@@ -72,7 +72,7 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
                        2,
                        2,
                        2),5,1,byrow=TRUE)
-  layout(mylayout)
+  graphics::layout(mylayout)
   
   main.title <- paste(site.name,"Precipitation and Q Event")
   for (i in 1:(nrow(df.events))) {
@@ -85,7 +85,7 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     subrain <- subdf1[,rain]
     subdate <- as.POSIXct(subdf1[,date])
     #Set Margins for first plot
-    par(mar= c(0, 4, 4, 2) + 0.1)
+    graphics::par(mar= c(0, 4, 4, 2) + 0.1)
     plot(subrain~subdate,
          #       data=subdf,
          type="h",
@@ -98,14 +98,14 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
          ylim=c(rmax,0),
          xlim=c(p.sdate,p.edate),
          main = "")
-    mtext(main.title,side=3,line=2,cex=1.5)
+    graphics::mtext(main.title,side=3,line=2,cex=1.5)
     
-    mtext(paste("Event depth =",
+    graphics::mtext(paste("Event depth =",
                 round(df.events[i,erain],2),"mm"),
-          side=3,line=0.5,col=colors()[84])
-    arrows(df.events[i,sdate],(rmax-0.15),
+          side=3,line=0.5,col= grDevices::colors()[84])
+    graphics::arrows(df.events[i,sdate],(rmax-0.15),
            df.events[i,edate],(rmax-0.15),
-           length=0.07,angle=20,col=colors()[84],
+           length=0.07,angle=20,col= grDevices::colors()[84],
            code=3) 
     
     
@@ -125,7 +125,7 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     subdateQ <- as.POSIXct(subdfQ1[,date])
     
     #Set Margins for second plot
-    par(mar= c(5, 4, 0, 2) + 0.1)
+    graphics::par(mar= c(5, 4, 0, 2) + 0.1)
     plot(subQ~subdateQ,
          #       data=subdf,
          type="l",
@@ -144,19 +144,19 @@ RMevents.plotQ <- function(df,dfQ,date="pdate",Qdate="pdate",rain = "rain",Q="Q"
     r[2] <- r[2]+24*3600
     rhour <- seq(r[1], r[2], by=24*3600/4)
     rday <- seq(r[1], r[2], by="days")
-    axis.POSIXct(1,subdf[,date],at=rhour,format=" ",tcl=-0.2)
-    axis.POSIXct(1,subdf[,date],at=rday,format=" ",tcl=-0.5)
-    axis.POSIXct(3,subdf[,date],at=rhour,format=" ",tcl=0.2)
-    axis.POSIXct(3,subdf[,date],at=rday,format=" ",tcl=0.5)
-    axis.POSIXct(1,subdf[,date],format = "%m/%d/%y")
+    graphics::axis.POSIXct(1,subdf[,date],at=rhour,format=" ",tcl=-0.2)
+    graphics::axis.POSIXct(1,subdf[,date],at=rday,format=" ",tcl=-0.5)
+    graphics::axis.POSIXct(3,subdf[,date],at=rhour,format=" ",tcl=0.2)
+    graphics::axis.POSIXct(3,subdf[,date],at=rday,format=" ",tcl=0.5)
+    graphics::axis.POSIXct(1,subdf[,date],format = "%m/%d/%y")
     #  timeline <- 
-    abline(v=p.sdate,lty=3,col=colors()[100])
-    abline(v=p.edate,lty=3,col=colors()[100])
+    graphics::abline(v=p.sdate,lty=3,col= grDevices::colors()[100])
+    graphics::abline(v=p.edate,lty=3,col= grDevices::colors()[100])
     
     if(SampleInfo){
-      arrows(df.events[i,sampbdate],(max(subdfQ[,Q])),
+      graphics::arrows(df.events[i,sampbdate],(max(subdfQ[,Q])),
              df.events[i,sampedate],(max(subdfQ[,Q])),
-             length=0.07,angle=20,col=colors()[84],
+             length=0.07,angle=20,col = grDevices::colors()[84],
              code=3)} 
     
     #  abline(v=df.events[i,sdate])

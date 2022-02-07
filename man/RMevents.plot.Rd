@@ -4,9 +4,17 @@
 \alias{RMevents.plot}
 \title{RMevents.plot}
 \usage{
-RMevents.plot(df, date = "pdate", rain = "rain", df.events,
-  sdate = "StartDate", edate = "EndDate", depth = "depth",
-  plot.buffer = 3, site.name = "")
+RMevents.plot(
+  df,
+  date = "pdate",
+  rain = "rain",
+  df.events,
+  sdate = "StartDate",
+  edate = "EndDate",
+  depth = "depth",
+  plot.buffer = 3,
+  site.name = ""
+)
 }
 \arguments{
 \item{df}{dataframe with unit value rainfall data}
@@ -33,11 +41,13 @@ Function to graph rainfall for a given x-day window around specified event perio
 }
 \examples{
 RDB <- CedarRRain
-RDB2 <- RMprep(RDB,prep.type=1,date.type=1,dates.in="CST.Time",tz="CST6CDT")
-RDB3 <- subset(RDB2,upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.>-1)
+RDB2 <- RMprep(RDB, prep.type = 1, date.type = 1,
+               dates.in = "CST.Time", tz = "CST6CDT")
+RDB3 <- subset(RDB2,
+          upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2. > -1)
 event.list <- RMevents(df=RDB3,ieHr=6,rainthresh=0.2,rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
-pdf("events.pdf")
+# pdf("events.pdf")
 RMevents.plot(RDB3,date="pdate",rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",df.events=events.0.2,sdate="StartDate","EndDate",depth= "rain",plot.buffer=2,site.name="Example Site")
-dev.off()
+# dev.off()
 }

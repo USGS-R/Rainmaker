@@ -7,6 +7,8 @@
     collapse='\n'))
 }
 
+utils::globalVariables(c("pdate"))
+
 #' cedarq
 #'
 #' Instantaneous values of flow from Cedar Creek

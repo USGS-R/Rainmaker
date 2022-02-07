@@ -43,10 +43,10 @@ RMevents_sko <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   }
   
 
-  rain.events <- aggregate(x = df[[rain]], by = list(df$event), sum) #find sum of rain in each event
-  start.dates <- aggregate(x = df[[time]], by = list(df$event), min)[,2] #find minimum date for each event
+  rain.events <- stats::aggregate(x = df[[rain]], by = list(df$event), sum) #find sum of rain in each event
+  start.dates <- stats::aggregate(x = df[[time]], by = list(df$event), min)[,2] #find minimum date for each event
   start.dates <- start.dates - timeInterval
-  end.dates <- aggregate(x = df[[time]], by = list(df$event), max)[,2]
+  end.dates <- stats::aggregate(x = df[[time]], by = list(df$event), max)[,2]
   
   out <- data.frame(stormnum = rain.events[,1],
                        StartDate = start.dates,
