@@ -29,3 +29,16 @@ gage or one mean radar rain column.
 \details{
 Rainfall event determination
 }
+\examples{
+RDB <- CedarRRain
+RDB2 <- RMprep(RDB,
+               prep.type = 1,
+               date.type = 1,
+               dates.in = "CST.Time",
+               tz = "CST6CDT")
+event.list <- RMevents(df = RDB2,
+                       ieHr = 6,
+                       rainthresh = 0.2,
+                       rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
+events.0.2 <- event.list$storms2
+}

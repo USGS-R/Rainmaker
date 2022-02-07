@@ -41,8 +41,10 @@ test_that("RMevents_sample", {
   expect_type(eventListSamples$tipsbystorm$event, "integer")
   
   expect_equal(round(eventListSamples$storms$rain[1], 3), 27.576)
-  expect_equal(eventListSamples$storms$StartDate[1], as.POSIXct("2008-01-07 05:00:00"))
-  expect_equal(eventListSamples$storms$EndDate[1], as.POSIXct("2008-01-08 19:00:00"))
+  expect_equal(eventListSamples$storms$StartDate[1], 
+               as.POSIXct("2008-01-07 05:00:00", tz = "CST6CDT"))
+  expect_equal(eventListSamples$storms$EndDate[1],
+               as.POSIXct("2008-01-08 19:00:00", tz = "CST6CDT"))
   
   expect_equal(ncol(eventListSamples$storms), 4)
   expect_equal(nrow(eventListSamples$storms), 17)

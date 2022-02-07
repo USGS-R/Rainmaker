@@ -3,3 +3,7 @@
 Rainmaker.Rproj
 .travis.yml
 R\Workflow.R
+CONDUCT.md
+README.Rmd
+DISCLAIMER.md
+^\.github$

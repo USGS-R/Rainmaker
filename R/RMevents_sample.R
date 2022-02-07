@@ -140,13 +140,14 @@ RMevents_sample <- function(dfrain,
                        rain = rainDepth)
   
   # Bind all tipsbystorm
-  tipsbystorm <- bind_rows(tipsbystorm_list, .id = NULL) %>%
-    select(!!sym(rain), !!sym(time),
-           dif_time = timediff_min,
-           event)
+  tipsbystorm <- dplyr::bind_rows(tipsbystorm_list, .id = NULL)
+  tipsbystorm <- dplyr::select(tipsbystorm,
+                               !!sym(rain), !!sym(time),
+                               dif_time = timediff_min,
+                               event)
   
   # Minimum time interval
-  timeInterval <- min(tipsbystorm$dif_time, na.rm = T)
+  timeInterval <- min(tipsbystorm$dif_time, na.rm = TRUE)
   
   out <- list(df_out, df_out, tipsbystorm, timeInterval)
   names(out) <- c('storms2', 'storms', 'tipsbystorm', 'timeInterval')

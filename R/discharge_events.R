@@ -28,7 +28,6 @@
 #' See the details section below for more information. 
 #' @return dataframe of all discharge events based on ieHr and qthresh criteria. Includes start and end times for each event. 
 #' @import dplyr
-#' @importFrom rlang sym
 #' @export
 discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate", ieHr_check = TRUE){
   
@@ -81,12 +80,15 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
   }
   
 
-  #discharge.events <- aggregate(x = df[[discharge]], by = list(df$event), sum) #find sum of discharge in each event
+  #discharge.events <- aggregate(x = df[[discharge]], by = list(df$event), sum) 
+  #find sum of discharge in each event
   
   # create new variable so can use in dplyr function
-  time_quo <- sym(time)
-  start.dates <- group_by(df, event) %>%
-    summarize(start_date = min(!!time_quo)) #find minimum date/time for each event
+  time_quo <- rlang::sym(time)
+  #find minimum date/time for each event (change to aggregate?)
+  start.dates <- dplyr::group_by(df, event) 
+  start.dates <- dplyr::summarize(start.dates,
+                                  start_date = min(!!time_quo)) 
   
   # find "punch" from original data that precedes start time
   
@@ -94,8 +96,9 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
   start.indices <- start.indices -1
 
   # find "punch" from original data that is after last event timestamp
-  end.dates <- group_by(df, event) %>%
-    summarize(end_date = max(!!time_quo))
+  end.dates <- dplyr::group_by(df, event)
+  end.dates <- dplyr::summarize(end.dates,
+                                end_date = max(!!time_quo, na.rm = TRUE))
   
   end.indices <- which(df_input[[time]] %in% end.dates$end_date)
   end.indices <- end.indices +1
@@ -115,10 +118,10 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
   start.indices <- ifelse(start.indices < 1, NA, start.indices)
   
   start.dates.adjusted <- df_input[start.indices, ]
-  start.dates.adjusted <- select(start.dates.adjusted, !!time_quo)
+  start.dates.adjusted <- dplyr::select(start.dates.adjusted, !!time_quo)
  
   end.dates.adjusted <- df_input[end.indices, ]
-  end.dates.adjusted <- select(end.dates.adjusted, !!time_quo)
+  end.dates.adjusted <- dplyr::select(end.dates.adjusted, !!time_quo)
   
   
   out <- data.frame(stormnum = start.dates$event,
@@ -139,14 +142,14 @@ discharge_events <- function(df, ieHr=6, qthresh, discharge="Value", time="pdate
       }
     }
     
-    out <- group_by(out, event_check) %>%
-      summarize(StartDate = min(StartDate), 
-                EndDate = max(EndDate)) %>%
-      select(-event_check)
+    out <- dplyr::group_by(out, event_check) %>%
+      dplyr::summarize(StartDate = min(StartDate, na.rm = TRUE), 
+                EndDate = max(EndDate, na.rm = TRUE)) %>%
+      dplyr::select(-event_check)
     
     out$stormnum <- 1:nrow(out)
     
-    out <- select(out, stormnum, StartDate, EndDate)
+    out <- dplyr::select(out, stormnum, StartDate, EndDate)
   }
   out <- as.data.frame(out)
   return(out)

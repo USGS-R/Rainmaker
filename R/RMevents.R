@@ -14,9 +14,19 @@
 #' @return list of all rain events that surpass rainthresh (storms2) and all rain events (storms). Also returns all
 #' a data frame of all rain observations > 0 with the associated date/time and assigned event number (tipsbystorm) and 
 #' the minimum time difference between observations (timeInterval)
-#' @import dplyr
-#' @importFrom rlang sym
 #' @export
+#' @examples
+#' RDB <- CedarRRain
+#' RDB2 <- RMprep(RDB,
+#'                prep.type = 1,
+#'                date.type = 1,
+#'                dates.in = "CST.Time",
+#'                tz = "CST6CDT")
+#' event.list <- RMevents(df = RDB2,
+#'                        ieHr = 6,
+#'                        rainthresh = 0.2,
+#'                        rain = "upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
+#' events.0.2 <- event.list$storms2
 RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   
   if(!time %in% names(df)){
@@ -47,7 +57,6 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   timeInterval <- min(dif_time)
   df$dif_time[2:nrow(df)] <- dif_time
   
-  
   ie <- ifelse(units(dif_time) == "mins", ieHr * 60, ieHr)
   
   # loop that assigns each row to an event number based on dif_time
@@ -59,13 +68,14 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
     }
   }
   
-
-  rain.events <- aggregate(x = df[[rain]], by = list(df$event), sum) #find sum of rain in each event
+  
+  rain.events <- stats::aggregate(x = df[[rain]], 
+                                  by = list(df$event), sum) #find sum of rain in each event
   
   # create new variable so can use in dplyr function
-  time_quo <- sym(time)
-  start.dates <- group_by(df, event) %>%
-    summarize(start_date = min(!!time_quo)) #find minimum date for each event
+  time_quo <- rlang::sym(time)
+  start.dates <- dplyr::group_by(df, event) %>%
+    dplyr::summarize(start_date = min(!!time_quo, na.rm = TRUE)) #find minimum date for each event
   
   start.dates <- start.dates$start_date - timeInterval
   
@@ -75,10 +85,12 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   end.dates <- end.dates$end_date
   
   out <- data.frame(stormnum = rain.events[,1],
-                       StartDate = start.dates,
-                       EndDate = end.dates,
-                       rain = rain.events[,2])
+                    StartDate = start.dates,
+                    EndDate = end.dates,
+                    rain = rain.events[,2])
   out2 <- subset(out, rain >= rainthresh, row.names = FALSE)
-  return(list(storms2 = out2, storms = out, tipsbystorm = df[,c(rain, time, 'dif_time', 'event')], timeInterval = timeInterval))
+  return(list(storms2 = out2,
+              storms = out,
+              tipsbystorm = df[,c(rain, time, 'dif_time', 'event')], 
+              timeInterval = timeInterval))
 }
-  

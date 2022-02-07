@@ -7,6 +7,9 @@
     collapse='\n'))
 }
 
+utils::globalVariables(c("pdate", "event", "event_check", "StartDate",
+                         "EndDate", "stormnum"))
+
 #' cedarq
 #'
 #' Instantaneous values of flow from Cedar Creek
@@ -32,6 +35,16 @@ NULL
 #' Beginning and ending dates and times for composite samples collected at Cedar Creek. This information can be used to determine rainfall for specific time periods using RMeventsSamples.
 #'
 #' @name cedarSamples
+#' @docType data
+#' @author Steve Corsi \email{srcorsi@@usgs.gov}
+#' @keywords rainmaker
+NULL
+
+#' precip_05408480
+#'
+#' Precip sample data from site 05408480
+#'
+#' @name precip_05408480
 #' @docType data
 #' @author Steve Corsi \email{srcorsi@@usgs.gov}
 #' @keywords rainmaker

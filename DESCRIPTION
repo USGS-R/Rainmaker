@@ -23,8 +23,16 @@ Depends:
     R (>= 3.0)
 Imports:
     dplyr,
+    utils,
+    graphics,
+    grDevices,
+    stats,
     rlang
+Suggests: 
+  testthat,
+  lubridate
 LazyLoad: yes
 LazyData: yes
-RoxygenNote: 7.1.1
-Suggests: testthat
+RoxygenNote: 7.1.2
+
+

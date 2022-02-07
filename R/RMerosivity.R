@@ -11,25 +11,37 @@
 #' @param rain string, column name of rainfall unit values, defaults to "rain"
 #' @param StormSummary dataframe output by RMIntense
 #' 
-#' method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), which superceded Agriculture Handbook 537 (1979).
+#' method=1: McGregor (1995) Supercedes Brown and Foster equation (1987), 
+#' which superceded Agriculture Handbook 537 (1979).
 #' 
-#' method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct computation of formula 2 found in AH537
+#' method=2: Wischmeier, Agriculture Handbook 537 (1979, 1981), correct
+#'  computation of formula 2 found in AH537
 #' 
-#' method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, based on equation in Agriculture Handbook 537. Storms with I30>2.5 are incorrectly computed.
+#' method=3: Original Rainmaker (1997) USGS Wisconsin Water Science Center, 
+#' based on equation in Agriculture Handbook 537. Storms with I30>2.5
+#'  are incorrectly computed.
 #' @export
 
-#' @references McGregor, K. C., R. L. Binger, A. J. Bowie, and G. R. Foster. 1995. Erosivity index values for northern Mississippi. Trans. Amer. Soc. Agric. Eng. 38:1039-1047;
+#' @references McGregor, K. C., R. L. Binger, A. J. Bowie, and G. R. Foster. 
+#' 1995. Erosivity index values for northern Mississippi. 
+#' Trans. Amer. Soc. Agric. Eng. 38:1039-1047;
 #' 
-#' Wischmeier, W. H. and D. D. Smith. 1978. Predicting rainfall erosion losses—A guide to conservation planning. U.S. Department of Agriculture, Agriculture Handbook 537, 58 pp.
+#' Wischmeier, W. H. and D. D. Smith. 1978. Predicting rainfall erosion losses-A
+#'  guide to conservation planning. U.S. Department of Agriculture, Agriculture
+#'   Handbook 537, 58 pp.
 #' 
-#' Wischmeier, W. H. and D. D. Smith. 1981. Supplement and Errata for "Predicting rainfall erosion losses—A guide to conservation planning". U.S. Department of Agriculture, Agriculture Handbook 537, 58 pp.
+#' Wischmeier, W. H. and D. D. Smith. 1981. Supplement and Errata for
+#'  "Predicting rainfall erosion losses-A guide to conservation planning". 
+#'  U.S. Department of Agriculture, Agriculture Handbook 537, 58 pp.
 #' 
-#' Renard, K. G., G. R. Foster, G. A. Weesies, D. K. McCool, and D. C. Yoder. 1997. Predicting soil erosion by water: A guide to conservation planning with the Revised Soil Loss Equation (RUSLE). U.S. Department of Agriculture, Agriculture Handbook 703, 404 pp.
+#' Renard, K. G., G. R. Foster, G. A. Weesies, D. K. McCool, 
+#' and D. C. Yoder. 1997. Predicting soil erosion by water: A guide to 
+#' conservation planning with the Revised Soil Loss Equation (RUSLE). U.S.
+#'  Department of Agriculture, Agriculture Handbook 703, 404 pp.
 
 RMerosivity <- function(df, ieHr, method, rain="rain", StormSummary=StormSummary){
   #Prep file for computation
-  library(dplyr)
-  
+
   if(!(rain %in% names(df))){
     stop(rain, " not in df")
   }
@@ -40,8 +52,10 @@ RMerosivity <- function(df, ieHr, method, rain="rain", StormSummary=StormSummary
   #add a dummy row to top of df.PrecipPrep
   x <- data.frame(rain = 0,
                   pdate = df$pdate[1] - 60*60*24)
+
   names(x)[1] <- rain
-  df <- bind_rows(x, df)
+  df <- dplyr::bind_rows(x, df)
+
   
   ieMin = 60*ieHr
   
@@ -72,7 +86,7 @@ RMerosivity <- function(df, ieHr, method, rain="rain", StormSummary=StormSummary
   #sum energy for each storm
   StormSummary$energy <- NA  
   for(i in 1:nrow(StormSummary)){
-    storm_i <- filter(df, pdate >= StormSummary$StartDate[i],
+    storm_i <- dplyr::filter(df, pdate >= StormSummary$StartDate[i],
                       pdate <= StormSummary$EndDate[i])
     StormSummary$energy[i] <- sum(storm_i$energy, na.rm = TRUE)
     
