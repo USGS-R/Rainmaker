@@ -83,13 +83,12 @@ rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
 site.name <- "Example Site"
 SampleInfo <- FALSE
-pdf(paste(site.name,"_events.pdf",sep=""))
+
 RMevents.plotQ(RDB3,dfQ,
 rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
 df.events=events.0.2,erain="rain",
 site.name=site.name,SampleInfo=SampleInfo)
-shell.exec(paste(site.name,"_events.pdf",sep=""))
-dev.off()
+
 #Example 2- Rainfall/Q plots with sample start/end arrows
 RDB <- CedarRRain
 cedarSamples <- cedarSamples
@@ -111,12 +110,12 @@ site.name <- "Example Site"
 SampleInfo <- TRUE
 sampbdate <- "pSstart"
 sampedate <- "pSend"
-RMeventsSamples.plotQ(RDB2,
-                      dfQ,
-                      rain="UVRain",
-                      df.events=eventListSamples,
-                      sdate="Braindate",
-                      edate="Eraindate",
-                      erain="depth",logy="",site.name=site.name,
-                      sampbdate="pSstart",sampedate="pSend")
+#RMevents.plotQ(RDB2,
+#                dfQ,
+#                rain="UVRain",
+#                df.events=eventListSamples,
+#                sdate="Braindate",
+#                edate="Eraindate",
+#                erain="depth",logy="",site.name=site.name,
+#                sampbdate="pSstart",sampedate="pSend")
 }
