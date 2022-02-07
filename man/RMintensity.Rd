@@ -53,7 +53,7 @@ event.list <- RMevents(df=RDB3,
                        rainthresh=0.2,
 rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.")
 events.0.2 <- event.list$storms2
-intensities <- RMIntense(RDB3,date="pdate",
+intensities <- RMintensity(RDB3,date="pdate",
 rain="upload.ph3_site_basin_cedar_creek.Id.0....Geographical.Mean.kg.m.2.",
 events.0.2,sdate="StartDate",edate="EndDate",depth="rain",xmin=c(5,15,30))
 }
