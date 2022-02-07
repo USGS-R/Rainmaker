@@ -27,7 +27,7 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
     stop("All time values are NA")
   }
   
-  ieMin <- ieHr * 60 # compute interevent period in minutes
+  #ieMin <- ieHr * 60 # compute interevent period in minutes
   #dateOrigin <- as.POSIXct('1884-01-01 00:00',origin = '1884-01-01 00:00')
   
   
@@ -48,9 +48,11 @@ RMevents <- function(df,ieHr=6,rainthresh=5.1,rain="rain",time="pdate"){
   df$dif_time[2:nrow(df)] <- dif_time
   
   
+  ie <- ifelse(units(dif_time) == "mins", ieHr * 60, ieHr)
+  
   # loop that assigns each row to an event number based on dif_time
   for (i in 2:nrow(df)){
-    if (dif_time[[i-1]] >= ieMin) {
+    if (dif_time[[i-1]] >= ie) {
       df$event[i] <- df$event[i-1] + 1
     } else {
       df$event[i] <- df$event[i-1]
